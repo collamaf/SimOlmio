@@ -69,7 +69,7 @@ B1EventAction::~B1EventAction()
 // Outputfiles definition
 
 //std::ofstream fileOut("cmosenergy.dat", std::ios::out);
-//std::ofstream fileOut1("precmosenergy.dat", std::ios::out);
+//std::ofstream fileOut1("PreGCenergy.dat", std::ios::out);
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -83,16 +83,16 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	(fRunAction->GetRunEnPre()).clear();
 	(fRunAction->GetRunEnPrePrim()).clear();
 	(fRunAction->GetRunPart()).clear();
-	(fRunAction->GetRunPreCmosX()).clear();
-	(fRunAction->GetRunPreCmosY()).clear();
-	(fRunAction->GetRunPreCmosZ()).clear();
-	(fRunAction->GetRunPreCmosDirX()).clear();
-	(fRunAction->GetRunPreCmosDirY()).clear();
-	(fRunAction->GetRunPreCmosDirZ()).clear();
-	(fRunAction->GetRunPreCmosVX()).clear();
-	(fRunAction->GetRunPreCmosVY()).clear();
-	(fRunAction->GetRunPreCmosVZ()).clear();
-	(fRunAction->GetRunPreCmosTrackID()).clear();
+	(fRunAction->GetRunPreGCX()).clear();
+	(fRunAction->GetRunPreGCY()).clear();
+	(fRunAction->GetRunPreGCZ()).clear();
+	(fRunAction->GetRunPreGCDirX()).clear();
+	(fRunAction->GetRunPreGCDirY()).clear();
+	(fRunAction->GetRunPreGCDirZ()).clear();
+	(fRunAction->GetRunPreGCVX()).clear();
+	(fRunAction->GetRunPreGCVY()).clear();
+	(fRunAction->GetRunPreGCVZ()).clear();
+	(fRunAction->GetRunPreGCTrackID()).clear();
 	(fRunAction->GetRunEnCmos()).clear();
 	(fRunAction->GetRunEnCmosPrim()).clear();
 	(fRunAction->GetRunEnCmosTime()).clear();
@@ -116,9 +116,9 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	(fRunAction->GetRunPartGen()).clear();
 	(fRunAction->GetRunIsotopeGen()).clear();
 	
-	(fRunAction->GetRunPreCmosPrestepReg()).clear();
-	(fRunAction->GetRunPreCmosOrigReg()).clear();
-	(fRunAction->GetRunPreCmosCreatorProcess()).clear();
+	(fRunAction->GetRunPreGCPrestepReg()).clear();
+	(fRunAction->GetRunPreGCOrigReg()).clear();
+	(fRunAction->GetRunPreGCCreatorProcess()).clear();
 
 	(fRunAction->SetMotherIsotope(-10));
 	(fRunAction->SetMotherEnergy(-10));

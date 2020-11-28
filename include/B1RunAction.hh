@@ -88,21 +88,21 @@ public:
 
 	std::vector<G4double>& GetRunEnPre() {return fRunEnPre; }
 	std::vector<G4double>& GetRunPart() {return fRunPart; }
-	std::vector<G4double>& GetRunPreCmosX() {return fRunPreCmosX;}
-	std::vector<G4double>& GetRunPreCmosY() {return fRunPreCmosY;}
-	std::vector<G4double>& GetRunPreCmosZ() {return fRunPreCmosZ;}
-	std::vector<G4double>& GetRunPreCmosDirX() {return fRunPreCmosDirX;}
-	std::vector<G4double>& GetRunPreCmosDirY() {return fRunPreCmosDirY;}
-	std::vector<G4double>& GetRunPreCmosDirZ() {return fRunPreCmosDirZ;}
-	std::vector<G4double>& GetRunPreCmosVX() {return fRunPreCmosVX;}
-	std::vector<G4double>& GetRunPreCmosVY() {return fRunPreCmosVY;}
-	std::vector<G4double>& GetRunPreCmosVZ() {return fRunPreCmosVZ;}
+	std::vector<G4double>& GetRunPreGCX() {return fRunPreGCX;}
+	std::vector<G4double>& GetRunPreGCY() {return fRunPreGCY;}
+	std::vector<G4double>& GetRunPreGCZ() {return fRunPreGCZ;}
+	std::vector<G4double>& GetRunPreGCDirX() {return fRunPreGCDirX;}
+	std::vector<G4double>& GetRunPreGCDirY() {return fRunPreGCDirY;}
+	std::vector<G4double>& GetRunPreGCDirZ() {return fRunPreGCDirZ;}
+	std::vector<G4double>& GetRunPreGCVX() {return fRunPreGCVX;}
+	std::vector<G4double>& GetRunPreGCVY() {return fRunPreGCVY;}
+	std::vector<G4double>& GetRunPreGCVZ() {return fRunPreGCVZ;}
 	std::vector<G4double>& GetRunEnPrePrim() {return fRunEnPrePrim; }
-	std::vector<G4double>& GetRunPreCmosTrackID() {return fRunPreCmosTrackID;}
+	std::vector<G4double>& GetRunPreGCTrackID() {return fRunPreGCTrackID;}
 	
-	std::vector<G4int>& GetRunPreCmosOrigReg() {return fRunPreCmosOrigReg;}
-	std::vector<G4int>& GetRunPreCmosPrestepReg() {return fRunPreCmosPrestepReg;}
-	std::vector<G4int>& GetRunPreCmosCreatorProcess() {return fRunPreCmosCreatorProcess;}
+	std::vector<G4int>& GetRunPreGCOrigReg() {return fRunPreGCOrigReg;}
+	std::vector<G4int>& GetRunPreGCPrestepReg() {return fRunPreGCPrestepReg;}
+	std::vector<G4int>& GetRunPreGCCreatorProcess() {return fRunPreGCCreatorProcess;}
 
 	
 	std::vector<G4double>& GetRunPreFilterEn() {return fRunPreFilterEn; }
@@ -158,16 +158,16 @@ private:
 	std::vector<G4double> fRunEnPre;
 	std::vector<G4double>	fRunEnPrePrim;
 	std::vector<G4double> fRunPart;
-	std::vector<G4double> fRunPreCmosX;
-	std::vector<G4double> fRunPreCmosY;
-	std::vector<G4double> fRunPreCmosZ;
-	std::vector<G4double> fRunPreCmosDirX;
-	std::vector<G4double> fRunPreCmosDirY;
-	std::vector<G4double> fRunPreCmosDirZ;
-	std::vector<G4double> fRunPreCmosVX;
-	std::vector<G4double> fRunPreCmosVY;
-	std::vector<G4double> fRunPreCmosVZ;
-	std::vector<G4double> fRunPreCmosTrackID;
+	std::vector<G4double> fRunPreGCX;
+	std::vector<G4double> fRunPreGCY;
+	std::vector<G4double> fRunPreGCZ;
+	std::vector<G4double> fRunPreGCDirX;
+	std::vector<G4double> fRunPreGCDirY;
+	std::vector<G4double> fRunPreGCDirZ;
+	std::vector<G4double> fRunPreGCVX;
+	std::vector<G4double> fRunPreGCVY;
+	std::vector<G4double> fRunPreGCVZ;
+	std::vector<G4double> fRunPreGCTrackID;
 
 	std::vector<G4double> fRunPreFilterEn;
 	std::vector<G4double> fRunPreFilterPart;
@@ -186,9 +186,9 @@ private:
 	std::vector<G4double> fRunIsotopeGen;
 	
 	
-	std::vector<G4int> fRunPreCmosPrestepReg;
-	std::vector<G4int> fRunPreCmosOrigReg;
-	std::vector<G4int> fRunPreCmosCreatorProcess;
+	std::vector<G4int> fRunPreGCPrestepReg;
+	std::vector<G4int> fRunPreGCOrigReg;
+	std::vector<G4int> fRunPreGCCreatorProcess;
 
 	std::vector<G4double> fRunEnExit;
 	std::vector<G4double> fRunXExit;

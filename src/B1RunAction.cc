@@ -208,23 +208,23 @@ void B1RunAction::CreateHistogram()
 //	analysisManager->CreateNtupleDColumn(0,"PreFilterTrackN");                  //2b
 //	analysisManager->CreateNtupleDColumn(0,"PreFilterPart", fRunPreFilterPart); //3b
 //	analysisManager->CreateNtupleDColumn(0,"PreFilterEn", fRunPreFilterEn); //4b
-	analysisManager->CreateNtupleDColumn(0,"PreCmosTrackN");                  //2
-	analysisManager->CreateNtupleDColumn(0,"PreCmosPart", fRunPart); //3
-	analysisManager->CreateNtupleDColumn(0,"PreCmosEn", fRunEnPre); //4
-	analysisManager->CreateNtupleDColumn(0,"PreCmosX", fRunPreCmosX); //4
-	analysisManager->CreateNtupleDColumn(0,"PreCmosY", fRunPreCmosY); //4
-	analysisManager->CreateNtupleDColumn(0,"PreCmosZ", fRunPreCmosZ); //4
-	analysisManager->CreateNtupleDColumn(0,"PreCmosDirX", fRunPreCmosDirX); //4
-	analysisManager->CreateNtupleDColumn(0,"PreCmosDirY", fRunPreCmosDirY); //4
-	analysisManager->CreateNtupleDColumn(0,"PreCmosDirZ", fRunPreCmosDirZ); //4
-	analysisManager->CreateNtupleDColumn(0,"PreCmosVX", fRunPreCmosVX); //4
-	analysisManager->CreateNtupleDColumn(0,"PreCmosVY", fRunPreCmosVY); //4
-	analysisManager->CreateNtupleDColumn(0,"PreCmosVZ", fRunPreCmosVZ); //4
-	analysisManager->CreateNtupleDColumn(0,"PreCmosEnPrim", fRunEnPrePrim); //4
-	analysisManager->CreateNtupleDColumn(0,"PreCmosEventNum", fRunPreCmosTrackID); //4
-	analysisManager->CreateNtupleIColumn(0,"PreCmosOrigReg", fRunPreCmosOrigReg); //4
-	analysisManager->CreateNtupleIColumn(0,"PreCmosPrestepReg", fRunPreCmosPrestepReg); //4
-	analysisManager->CreateNtupleIColumn(0,"PreCmosCreatorProcess", fRunPreCmosCreatorProcess); //4
+	analysisManager->CreateNtupleDColumn(0,"PreGCTrackN");                  //2
+	analysisManager->CreateNtupleDColumn(0,"PreGCPart", fRunPart); //3
+	analysisManager->CreateNtupleDColumn(0,"PreGCEn", fRunEnPre); //4
+	analysisManager->CreateNtupleDColumn(0,"PreGCX", fRunPreGCX); //4
+	analysisManager->CreateNtupleDColumn(0,"PreGCY", fRunPreGCY); //4
+	analysisManager->CreateNtupleDColumn(0,"PreGCZ", fRunPreGCZ); //4
+	analysisManager->CreateNtupleDColumn(0,"PreGCDirX", fRunPreGCDirX); //4
+	analysisManager->CreateNtupleDColumn(0,"PreGCDirY", fRunPreGCDirY); //4
+	analysisManager->CreateNtupleDColumn(0,"PreGCDirZ", fRunPreGCDirZ); //4
+	analysisManager->CreateNtupleDColumn(0,"PreGCVX", fRunPreGCVX); //4
+	analysisManager->CreateNtupleDColumn(0,"PreGCVY", fRunPreGCVY); //4
+	analysisManager->CreateNtupleDColumn(0,"PreGCVZ", fRunPreGCVZ); //4
+	analysisManager->CreateNtupleDColumn(0,"PreGCEnPrim", fRunEnPrePrim); //4
+	analysisManager->CreateNtupleDColumn(0,"PreGCEventNum", fRunPreGCTrackID); //4
+	analysisManager->CreateNtupleIColumn(0,"PreGCOrigReg", fRunPreGCOrigReg); //4
+	analysisManager->CreateNtupleIColumn(0,"PreGCPrestepReg", fRunPreGCPrestepReg); //4
+	analysisManager->CreateNtupleIColumn(0,"PreGCCreatorProcess", fRunPreGCCreatorProcess); //4
 //	analysisManager->CreateNtupleDColumn(0,"InCmosTrackN");                   //5
 //	analysisManager->CreateNtupleDColumn(0,"InCmosPart", fRunPartCmos); //6
 //	analysisManager->CreateNtupleDColumn(0,"InCmosEn", fRunEnCmos); //7

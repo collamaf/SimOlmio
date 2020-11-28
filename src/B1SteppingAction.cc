@@ -108,18 +108,18 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 			(runStepAction->GetRunEnPre()).push_back(eKinPre/keV);
 			fEventAction->AddNoPre(1); //update the counter of particles entering CMOS in the event
 			(runStepAction->GetRunPart()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode()); //add PID of particle enetering CMOS
-			(runStepAction->GetRunPreCmosX()).push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
-			(runStepAction->GetRunPreCmosY()).push_back(step->GetPostStepPoint()->GetPosition().y()/mm);
-			(runStepAction->GetRunPreCmosZ()).push_back(step->GetPostStepPoint()->GetPosition().z()/mm);
+			(runStepAction->GetRunPreGCX()).push_back(step->GetPostStepPoint()->GetPosition().x()/mm);
+			(runStepAction->GetRunPreGCY()).push_back(step->GetPostStepPoint()->GetPosition().y()/mm);
+			(runStepAction->GetRunPreGCZ()).push_back(step->GetPostStepPoint()->GetPosition().z()/mm);
 		
-		(runStepAction->GetRunPreCmosDirX()).push_back(step->GetPostStepPoint()->GetMomentumDirection().x());
-		(runStepAction->GetRunPreCmosDirY()).push_back(step->GetPostStepPoint()->GetMomentumDirection().y());
-		(runStepAction->GetRunPreCmosDirZ()).push_back(step->GetPostStepPoint()->GetMomentumDirection().z());
+		(runStepAction->GetRunPreGCDirX()).push_back(step->GetPostStepPoint()->GetMomentumDirection().x());
+		(runStepAction->GetRunPreGCDirY()).push_back(step->GetPostStepPoint()->GetMomentumDirection().y());
+		(runStepAction->GetRunPreGCDirZ()).push_back(step->GetPostStepPoint()->GetMomentumDirection().z());
 			
 		
-		(runStepAction->GetRunPreCmosVX()).push_back(step->GetTrack()->GetVertexPosition().x()/mm);
-		(runStepAction->GetRunPreCmosVY()).push_back(step->GetTrack()->GetVertexPosition().y()/mm);
-		(runStepAction->GetRunPreCmosVZ()).push_back(step->GetTrack()->GetVertexPosition().z()/mm);
+		(runStepAction->GetRunPreGCVX()).push_back(step->GetTrack()->GetVertexPosition().x()/mm);
+		(runStepAction->GetRunPreGCVY()).push_back(step->GetTrack()->GetVertexPosition().y()/mm);
+		(runStepAction->GetRunPreGCVZ()).push_back(step->GetTrack()->GetVertexPosition().z()/mm);
 //		G4cout<<"BBBBBBBB Touch= "<< step->GetTrack()->GetTouchable()->GetVolume()->GetName()<<" originTouch= "<<step->GetTrack()->GetOriginTouchable()->GetVolume()->GetName()<<G4endl;
 
 		G4String origVolumeName=step->GetTrack()->GetOriginTouchable()->GetVolume()->GetName();
@@ -163,17 +163,17 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		evt->KeepTheEvent();
 		}
 //		volumeCode=step->GetTrack()->GetOriginTouchable()->GetVolume()->GetName()=="Sphere"?1:0;
-		//		(runStepAction->GetRunPreCmosOrigReg()).push_back(step->GetTrack()->GetOriginTouchable()->GetVolume()->GetName());
-		(runStepAction->GetRunPreCmosCreatorProcess()).push_back(step->GetTrack()->GetCreatorProcess()->GetProcessSubType());
+		//		(runStepAction->GetRunPreGCOrigReg()).push_back(step->GetTrack()->GetOriginTouchable()->GetVolume()->GetName());
+		(runStepAction->GetRunPreGCCreatorProcess()).push_back(step->GetTrack()->GetCreatorProcess()->GetProcessSubType());
 
 //		G4cout<<"proc= "<<step->GetTrack()->GetCreatorProcess()->GetProcessName()<<" ype= "<<step->GetTrack()->GetCreatorProcess()->GetProcessType()<<" subtype= "<<step->GetTrack()->GetCreatorProcess()->GetProcessSubType()<<G4endl;
 		
-		(runStepAction->GetRunPreCmosPrestepReg()).push_back(prestepVolumeCode);
+		(runStepAction->GetRunPreGCPrestepReg()).push_back(prestepVolumeCode);
 
-		(runStepAction->GetRunPreCmosOrigReg()).push_back(origVolumeCode);
+		(runStepAction->GetRunPreGCOrigReg()).push_back(origVolumeCode);
 
 		
-			(runStepAction->GetRunPreCmosTrackID()).push_back(fEventAction->GetPassCounterCmosPrim());
+			(runStepAction->GetRunPreGCTrackID()).push_back(fEventAction->GetPassCounterCmosPrim());
 //		}
 //
 //		if (fEventAction->GetPassCounterCmos()==0 && fEventAction->GetPassCounterCmosPrim()==0) {
