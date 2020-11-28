@@ -1,0 +1,41 @@
+# Macro file for example B1
+#
+# Can be run in batch, without graphic
+# or interactively: Idle> /control/execute run1.mac
+#
+# Change the default number of workers (in multi-threading mode)
+#/run/numberOfWorkers 4
+#
+# Initialize kernel
+/run/initialize
+#
+/control/verbose 0
+/run/verbose 1
+/event/verbose 0
+/tracking/verbose 0
+#
+
+/tracking/verbose 0
+
+# /gps/pos/type Volume
+# /gps/pos/confine Sphere
+/gps/particle geantino
+/gps/pos/type Volume
+/gps/pos/shape Sphere
+/gps/pos/centre 0. 0. 5. cm
+/gps/pos/radius 10 cm
+/gps/pos/confine Sphere
+/gps/ang/type iso
+/gps/ene/type Exp
+/gps/ene/min 2. MeV
+/gps/ene/max 10. MeV
+/gps/ene/ezero 1.
+
+
+#
+/run/beamOn 100
+#/run/beamOn 1542390 #for 3000 frames
+# /run/beamOn 1401600 #for 3000 frames with todays Sr source acitivity of 2336
+#/run/beamOn 1000000
+#/run/beamOn 10000000
+#000
