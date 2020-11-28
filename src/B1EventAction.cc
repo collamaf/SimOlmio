@@ -178,13 +178,13 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 void B1EventAction::EndOfEventAction(const G4Event* evento)
 {
 	// accumulate statistics in run action
-	
-	fRunAction->AddEdep(fEdep);
-	fRunAction->AddEdkin(fEdkin);
-
-	(fRunAction->GetRunEAbsComp()).push_back(fEdepEle/keV);
-	(fRunAction->GetRunEAbsComp()).push_back(fEdepPos/keV);
-	(fRunAction->GetRunEAbsComp()).push_back(fEdepFot/keV);
+//	
+//	fRunAction->AddEdep(fEdep);
+//	fRunAction->AddEdkin(fEdkin);
+//
+//	(fRunAction->GetRunEAbsComp()).push_back(fEdepEle/keV);
+//	(fRunAction->GetRunEAbsComp()).push_back(fEdepPos/keV);
+//	(fRunAction->GetRunEAbsComp()).push_back(fEdepFot/keV);
 
 	G4int NevTot=fRunAction->GetEventNumber();
 	
@@ -197,16 +197,16 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 	// fill ntuple
 	
 	if(1||fEdep>0)analysisManager->FillNtupleDColumn(0, 0, fEdep/keV);
-	analysisManager->FillNtupleDColumn(0, 2, fPreFilterNo); //number of particles entering filter
-	analysisManager->FillNtupleDColumn(0, 5, fPreNo); //number of particles entering CMOS
-	analysisManager->FillNtupleDColumn(0, 22, fno); //number of hits into the detector
+//	analysisManager->FillNtupleDColumn(0, 2, fPreFilterNo); //number of particles entering filter
+	analysisManager->FillNtupleDColumn(0, 0, fPreNo); //number of particles entering CMOS
+//	analysisManager->FillNtupleDColumn(0, 22, fno); //number of hits into the detector
 //	if(1/*fEdepSr>0*/)analysisManager->FillNtupleDColumn(0, 10, fEdepSr/keV);
 //	if(fEdepEl>0)analysisManager->FillNtupleDColumn(0, 11, fEdepEl/keV);
 //	if(1/*fEdepY>0*/)analysisManager->FillNtupleDColumn(0, 11, fEdepY/keV);
-	analysisManager->FillNtupleDColumn(0,33, fSourceX/mm);
-	analysisManager->FillNtupleDColumn(0,34, fSourceY/mm);
-	analysisManager->FillNtupleDColumn(0,35, fSourceZ/mm);
-	analysisManager->FillNtupleSColumn(0,43, fRegion);
+	analysisManager->FillNtupleDColumn(0,17, fSourceX/mm);
+	analysisManager->FillNtupleDColumn(0,18, fSourceY/mm);
+	analysisManager->FillNtupleDColumn(0,19, fSourceZ/mm);
+	analysisManager->FillNtupleSColumn(0,25, fRegion);
 
 	/*
 	analysisManager->FillNtupleDColumn(0,19, fSourceCosX/mm);
@@ -220,7 +220,7 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 	
 	if(1||fEdep>0) analysisManager->AddNtupleRow(0);
 	
-	if(evento->GetEventID()<=1e5){ //to write to proper ntuple all the source particles info
+	if(0&&evento->GetEventID()<=1e5){ //to write to proper ntuple all the source particles info
 		analysisManager->FillNtupleDColumn(1,0, fSourceX/mm);
 		analysisManager->FillNtupleDColumn(1,1, fSourceY/mm);
 		analysisManager->FillNtupleDColumn(1,2, fSourceZ/mm);

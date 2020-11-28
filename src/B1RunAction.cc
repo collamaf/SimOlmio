@@ -88,7 +88,7 @@ void B1RunAction::BeginOfRunAction(const G4Run* run)
 	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 	
 	nbEventInRun = run->GetNumberOfEventToBeProcessed();
-	analysisManager->FillNtupleIColumn(0,42, nbEventInRun);
+//	analysisManager->FillNtupleIColumn(0,42, nbEventInRun);
 
 }
 
@@ -202,12 +202,12 @@ void B1RunAction::CreateHistogram()
 	
 	analysisManager->CreateNtuple("B1", "physics");
 	analysisManager->CreateNtuple("Source", "SourceNtuple");
-	
-	analysisManager->CreateNtupleDColumn(0,"Eabs");                           //0
-	analysisManager->CreateNtupleDColumn(0,"EabsComp", fRunEAbsComp); //1
-	analysisManager->CreateNtupleDColumn(0,"PreFilterTrackN");                  //2b
-	analysisManager->CreateNtupleDColumn(0,"PreFilterPart", fRunPreFilterPart); //3b
-	analysisManager->CreateNtupleDColumn(0,"PreFilterEn", fRunPreFilterEn); //4b
+//
+//	analysisManager->CreateNtupleDColumn(0,"Eabs");                           //0
+//	analysisManager->CreateNtupleDColumn(0,"EabsComp", fRunEAbsComp); //1
+//	analysisManager->CreateNtupleDColumn(0,"PreFilterTrackN");                  //2b
+//	analysisManager->CreateNtupleDColumn(0,"PreFilterPart", fRunPreFilterPart); //3b
+//	analysisManager->CreateNtupleDColumn(0,"PreFilterEn", fRunPreFilterEn); //4b
 	analysisManager->CreateNtupleDColumn(0,"PreCmosTrackN");                  //2
 	analysisManager->CreateNtupleDColumn(0,"PreCmosPart", fRunPart); //3
 	analysisManager->CreateNtupleDColumn(0,"PreCmosEn", fRunEnPre); //4
@@ -225,17 +225,17 @@ void B1RunAction::CreateHistogram()
 	analysisManager->CreateNtupleIColumn(0,"PreCmosOrigReg", fRunPreCmosOrigReg); //4
 	analysisManager->CreateNtupleIColumn(0,"PreCmosPrestepReg", fRunPreCmosPrestepReg); //4
 	analysisManager->CreateNtupleIColumn(0,"PreCmosCreatorProcess", fRunPreCmosCreatorProcess); //4
-	analysisManager->CreateNtupleDColumn(0,"InCmosTrackN");                   //5
-	analysisManager->CreateNtupleDColumn(0,"InCmosPart", fRunPartCmos); //6
-	analysisManager->CreateNtupleDColumn(0,"InCmosEn", fRunEnCmos); //7
-	analysisManager->CreateNtupleDColumn(0,"InCmosEnPrim", fRunEnCmosPrim); //7b
-	analysisManager->CreateNtupleFColumn(0,"InCmosTime", fRunEnCmosTime); //7c
-	analysisManager->CreateNtupleDColumn(0,"InCmosX", fRunXCmos); //8
-	analysisManager->CreateNtupleDColumn(0,"InCmosY", fRunYCmos); //9
-	analysisManager->CreateNtupleDColumn(0,"InCmosZ", fRunZCmos); //10
-	analysisManager->CreateNtupleDColumn(0,"PixelID", fRunPixNo); //11
-	analysisManager->CreateNtupleDColumn(0,"PixXPos", fRunPixXpos); //13
-	analysisManager->CreateNtupleDColumn(0,"PixYPos", fRunPixYpos); //14
+//	analysisManager->CreateNtupleDColumn(0,"InCmosTrackN");                   //5
+//	analysisManager->CreateNtupleDColumn(0,"InCmosPart", fRunPartCmos); //6
+//	analysisManager->CreateNtupleDColumn(0,"InCmosEn", fRunEnCmos); //7
+//	analysisManager->CreateNtupleDColumn(0,"InCmosEnPrim", fRunEnCmosPrim); //7b
+//	analysisManager->CreateNtupleFColumn(0,"InCmosTime", fRunEnCmosTime); //7c
+//	analysisManager->CreateNtupleDColumn(0,"InCmosX", fRunXCmos); //8
+//	analysisManager->CreateNtupleDColumn(0,"InCmosY", fRunYCmos); //9
+//	analysisManager->CreateNtupleDColumn(0,"InCmosZ", fRunZCmos); //10
+//	analysisManager->CreateNtupleDColumn(0,"PixelID", fRunPixNo); //11
+//	analysisManager->CreateNtupleDColumn(0,"PixXPos", fRunPixXpos); //13
+//	analysisManager->CreateNtupleDColumn(0,"PixYPos", fRunPixYpos); //14
 	analysisManager->CreateNtupleDColumn(0,"SourceX");                           //14
 	analysisManager->CreateNtupleDColumn(0,"SourceY");                           //15
 	analysisManager->CreateNtupleDColumn(0,"SourceZ");                           //16
@@ -246,8 +246,8 @@ void B1RunAction::CreateHistogram()
 
 	analysisManager->CreateNtupleDColumn(0,"SourceEne", fRunEnGen); //20
 	analysisManager->CreateNtupleDColumn(0,"SourcePart", fRunPartGen); //20
-	analysisManager->CreateNtupleDColumn(0,"SourceIsotope", fRunIsotopeGen); //21
-	analysisManager->CreateNtupleIColumn(0,"Nev");							//22
+//	analysisManager->CreateNtupleDColumn(0,"SourceIsotope", fRunIsotopeGen); //21
+//	analysisManager->CreateNtupleIColumn(0,"Nev");							//22
 	analysisManager->CreateNtupleSColumn(0,"SourceReg");                           //17
 
 	analysisManager->CreateNtupleDColumn(1,"AllX");                           //0
