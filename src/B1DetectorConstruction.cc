@@ -51,9 +51,9 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1DetectorConstruction::B1DetectorConstruction(G4double x0, G4double ZValue, G4double CollHoleDiam, G4double CollThickness, G4int CollMaterial, G4int FilterFlag, G4double SourceSelect, G4int SensorChoice, G4bool QuickFlag, G4double PxThickness)
+B1DetectorConstruction::B1DetectorConstruction(G4double x0, G4double CenterSphere, G4double CollHoleDiam, G4double CollThickness, G4int CollMaterial, G4int FilterFlag, G4double SourceSelect, G4int SensorChoice, G4bool QuickFlag, G4double PxThickness)
 : G4VUserDetectorConstruction(),
-fScoringVolume(0), fX0Scan(x0), fZValue(ZValue), fCollHoleDiam(CollHoleDiam), fCollThickness(CollThickness), fCollMaterial(CollMaterial), fFilterFlag(FilterFlag), fSourceSelect(SourceSelect), fSensorChoice(SensorChoice), fQuickFlag(QuickFlag), fPixelThickness(PxThickness)
+fScoringVolume(0), fX0Scan(x0), fCenterSphere(CenterSphere), fCollHoleDiam(CollHoleDiam), fCollThickness(CollThickness), fCollMaterial(CollMaterial), fFilterFlag(FilterFlag), fSourceSelect(SourceSelect), fSensorChoice(SensorChoice), fQuickFlag(QuickFlag), fPixelThickness(PxThickness)
 { }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -167,12 +167,11 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double distSphereSurface=70*mm;
 	G4double distGammaCamera=25*cm;
 	
-	G4double sphereCenterZ=0.5*phantom_sizeZ*cm-distSphereSurface*cm-0.5*sphere_diameter[5]*cm;
-//	sphereCenterZ=0*cm;
+	G4double sphereCenterZ=0.5*phantom_sizeZ*cm-distSphereSurface*cm-0.5*sphere_diameter[G4int(fSourceSelect)]*cm;
+	
+	if (fCenterSphere==0) sphereCenterZ=0*cm; //sfera centrata
 	G4ThreeVector spherePos= G4ThreeVector(0,0,sphereCenterZ);
 	G4ThreeVector gammaCameraPos= G4ThreeVector(0,phantom_sizeY*0.5+distGammaCamera,0);
-
-	G4cout<<"AAAAAAA "<<sphereCenterZ/cm<<G4endl;
 	
 	G4double gammaCamera_sizeXZ=100*cm;
 	G4double gammaCamera_sizeY=10*um;
@@ -226,9 +225,9 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	new G4EllipticalTube("PhantomInt",                       //its name
 						0.5*phantom_sizeX, 0.5*phantom_sizeY, 0.5*phantom_sizeZ);     //its size
 	
-	G4Orb* solidSphereLarge= new G4Orb("SphereLarge", 0.5*sphere_diameter[5]+sphere_thickness);
+	G4Orb* solidSphereLarge= new G4Orb("SphereLarge", 0.5*sphere_diameter[G4int(fSourceSelect)]+sphere_thickness);
 	
-	G4Orb* solidSphereInt= new G4Orb("SphereInt", 0.5*sphere_diameter[5]);
+	G4Orb* solidSphereInt= new G4Orb("SphereInt", 0.5*sphere_diameter[G4int(fSourceSelect)]);
 
 	G4SubtractionSolid* solidSphereShell=new G4SubtractionSolid("SphereLarge-SphereInt", solidSphereLarge, solidSphereInt);
 

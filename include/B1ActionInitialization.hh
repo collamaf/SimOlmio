@@ -51,7 +51,7 @@ public:
 	
 protected:
 	G4double fX0Scan;
-	G4double fZValue;
+	G4double fCenterSphere;
 	G4double fCollHoleDiam;
 	G4int fFilterFlag;
 	G4double fTBR;

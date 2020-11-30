@@ -70,8 +70,8 @@ int main(int argc,char** argv)
 	// Detect interactive mode (if no arguments) and define UI session
 	G4UIExecutive* ui = 0;
 	
-	G4double x0Scan=0, ZValue=1.73*mm, AbsorberDiam=0*mm,AbsorberThickness=1*mm, TBRvalue=1;
-	G4int FilterFlag=1, SourceChoice=1, SensorChoice=1, AbsorberMaterial=1, QuickFlagCommandLine=0;
+	G4double x0Scan=0, CenterSphere=0, AbsorberDiam=0*mm,AbsorberThickness=1*mm, TBRvalue=1;
+	G4int FilterFlag=1, SourceChoice=5, SensorChoice=1, AbsorberMaterial=1, QuickFlagCommandLine=0;
 	
 	G4String MacroName ="";
 	G4String FileNameLabel="";
@@ -129,9 +129,9 @@ int main(int argc,char** argv)
 			{
 				AbsorberMaterial=strtod (argv[++i], NULL);;
 			}
-			else if(option.compare("-Z")==0)
+			else if(option.compare("-Center")==0)
 			{
-				ZValue=strtod (argv[++i], NULL);;
+				CenterSphere=strtod (argv[++i], NULL);;
 			}
 			else if(option.compare("-Fil")==0)
 			{
@@ -213,12 +213,13 @@ int main(int argc,char** argv)
 	G4String FileNameCommonPart;
 //
 //	FileNameCommonPart.append("_X"+ std::to_string((G4int)x0Scan));
-//	FileNameCommonPart.append("_Z"+ std::to_string((G4int)(100*ZValue)));
+//	FileNameCommonPart.append("_Z"+ std::to_string((G4int)(100*CenterSphere)));
 //
 //	if (AbsorberDiam>=0) FileNameCommonPart.append("_AbsDz" + std::to_string((G4int)(1000*AbsorberThickness))+"_AbsHole" + std::to_string((G4int)(100*AbsorberDiam)) +"_AbsMat" + MaterialiAssorbitore[AbsorberMaterial-1]);
 //	else FileNameCommonPart.append("_NoAbs");
 //
-//	FileNameCommonPart.append("_Fil" + std::to_string((G4int)FilterFlag));
+	//	FileNameCommonPart.append("_Fil" + std::to_string((G4int)FilterFlag));
+		FileNameCommonPart.append("_s" + std::to_string((G4int)SourceSelect));
 //
 //	if (SourceSelect==1) FileNameCommonPart.append("_PSr");
 //	if (SourceSelect==2) FileNameCommonPart.append("_ExtSr");
@@ -265,7 +266,7 @@ int main(int argc,char** argv)
 	// Set mandatory initialization classes
 	// Detector construction
 
-	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, ZValue, AbsorberDiam, AbsorberThickness, AbsorberMaterial, FilterFlag, SourceChoice, SensorChoice, QuickFlag, PixelThickness)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
+	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, CenterSphere, AbsorberDiam, AbsorberThickness, AbsorberMaterial, FilterFlag, SourceChoice, SensorChoice, QuickFlag, PixelThickness)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
 	
 	// Physics list
 	//G4VModularPhysicsList* physicsList = new QBBC;
@@ -278,8 +279,8 @@ int main(int argc,char** argv)
 	runManager->SetUserInitialization(physicsList);
 	
 	// User action initialization
-	//	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, CollHoleDiam, FilterFlag, primFile, TBRvalue,SourceSelect, SourceSelect));
-	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, ZValue, AbsorberDiam, FilterFlag, TBRvalue, SourceSelect, SensorChoice, OutFileName));
+	//	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, CenterSphere, CollHoleDiam, FilterFlag, primFile, TBRvalue,SourceSelect, SourceSelect));
+	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, CenterSphere, AbsorberDiam, FilterFlag, TBRvalue, SourceSelect, SensorChoice, OutFileName));
 	
 	// Initialize visualization
 	//
