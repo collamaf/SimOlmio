@@ -167,8 +167,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double distSphereSurface=70*mm;
 	G4double distGammaCamera=25*cm;
 	
-	G4double sphereCenterZ=0.5*phantom_sizeZ*cm-distSphereSurface*cm-0.5*sphere_diameter[G4int(fSourceSelect)]*cm;
-	
+	G4double sphereCenterZ=0.5*phantom_sizeZ-distSphereSurface-0.5*sphere_diameter[G4int(fSourceSelect)];
 	if (fCenterSphere==0) sphereCenterZ=0*cm; //sfera centrata
 	G4ThreeVector spherePos= G4ThreeVector(0,0,sphereCenterZ);
 	G4ThreeVector gammaCameraPos= G4ThreeVector(0,phantom_sizeY*0.5+distGammaCamera,0);
