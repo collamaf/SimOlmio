@@ -58,7 +58,7 @@ protected:
 	G4double fCollThickness;
 	G4int fCollMaterial;
 	G4int fFilterFlag;
-	G4double fSourceSelect;
+	G4double fSphereSelect;
 	G4int fIsotopeChoice;
 	G4bool fQuickFlag;
 	G4double fPixelThickness;

@@ -51,9 +51,9 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1DetectorConstruction::B1DetectorConstruction(G4double x0, G4double CenterSphere, G4double CollHoleDiam, G4double CollThickness, G4int CollMaterial, G4int FilterFlag, G4double SourceSelect, G4int IsotopeChoice, G4bool QuickFlag, G4double PxThickness)
+B1DetectorConstruction::B1DetectorConstruction(G4double x0, G4double CenterSphere, G4double CollHoleDiam, G4double CollThickness, G4int CollMaterial, G4int FilterFlag, G4double SphereSelect, G4int IsotopeChoice, G4bool QuickFlag, G4double PxThickness)
 : G4VUserDetectorConstruction(),
-fScoringVolume(0), fX0Scan(x0), fCenterSphere(CenterSphere), fCollHoleDiam(CollHoleDiam), fCollThickness(CollThickness), fCollMaterial(CollMaterial), fFilterFlag(FilterFlag), fSourceSelect(SourceSelect), fIsotopeChoice(IsotopeChoice), fQuickFlag(QuickFlag), fPixelThickness(PxThickness)
+fScoringVolume(0), fX0Scan(x0), fCenterSphere(CenterSphere), fCollHoleDiam(CollHoleDiam), fCollThickness(CollThickness), fCollMaterial(CollMaterial), fFilterFlag(FilterFlag), fSphereSelect(SphereSelect), fIsotopeChoice(IsotopeChoice), fQuickFlag(QuickFlag), fPixelThickness(PxThickness)
 { }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -144,7 +144,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 //	else if (fCollMaterial==3) shapeColl_mat=ABS;
 //	G4Material* GammaSource_mat = polycarbonate;
 //	G4Material* SourcePSR_mat=nist->FindOrBuildMaterial("MyPlastic");
-//	if (fSourceSelect==8 || fSourceSelect==9) SourceExtSR_mat=world_mat;
+//	if (fSphereSelect==8 || fSphereSelect==9) SourceExtSR_mat=world_mat;
 //
 //	G4Material* Na22nudeSource_mat = nist->FindOrBuildMaterial("MyAlu");
 
@@ -160,7 +160,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double phantom_thickness = 2.5*mm;
 	G4double sphere_thickness = 5*mm;
 	
-	G4int whichSphere=abs(G4int(fSourceSelect))-1;
+	G4int whichSphere=abs(G4int(fSphereSelect))-1;
 
 	G4double sphere_diameter[6]= {
 		10*mm, 13*mm, 17*mm, 22*mm, 28*mm, 37*mm
@@ -217,17 +217,35 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 
 	
-	G4EllipticalTube* solidPhantomLarge =
-	new G4EllipticalTube("PhantomLarge",                       //its name
+	G4VSolid* solidPhantomLarge;
+	G4VSolid* solidPhantomInt;
+	G4VSolid* solidSphereLarge;
+	G4VSolid* solidSphereInt;
+	G4RotationMatrix* phantomRot= new G4RotationMatrix();
+
+	if (fSphereSelect>0){ //fantoccio simil NEMA
+		solidPhantomLarge =	new G4EllipticalTube("PhantomLarge",                       //its name
 						0.5*phantom_sizeX+phantom_thickness, 0.5*phantom_sizeY+phantom_thickness, 0.5*phantom_sizeZ+phantom_thickness);     //its size
-	
-	G4EllipticalTube* solidPhantomInt =
-	new G4EllipticalTube("PhantomInt",                       //its name
-						0.5*phantom_sizeX, 0.5*phantom_sizeY, 0.5*phantom_sizeZ);     //its size
-	
-	G4Orb* solidSphereLarge= new G4Orb("SphereLarge", 0.5*sphere_diameter[whichSphere]+sphere_thickness);
-	
-	G4Orb* solidSphereInt= new G4Orb("SphereInt", 0.5*sphere_diameter[whichSphere]);
+		
+		solidPhantomInt =
+		new G4EllipticalTube("PhantomInt",                       //its name
+							0.5*phantom_sizeX, 0.5*phantom_sizeY, 0.5*phantom_sizeZ);     //its size
+		
+		solidSphereLarge= new G4Orb("SphereLarge", 0.5*sphere_diameter[whichSphere]+sphere_thickness);
+		
+		solidSphereInt= new G4Orb("SphereInt", 0.5*sphere_diameter[whichSphere]);
+		
+	} else { //fantoccio simil bistecca
+		solidPhantomLarge =	new G4Tubs("PhantomLarge",0,0.5*phantom_sizeX+phantom_thickness, 0.5*phantom_sizeZ+phantom_thickness,0*deg,360*deg);     //its size
+		
+		solidPhantomInt =		new G4Tubs("PhantomInt",0,0.5*phantom_sizeX,0.5*phantom_sizeZ,0*deg,360*deg);     //its size
+		
+		solidSphereLarge= new G4Tubs("SphereLarge",0,0.5*sphere_diameter[whichSphere]+sphere_thickness, 0.5*phantom_sizeZ+phantom_thickness,0,360*deg);
+		
+		solidSphereInt= new G4Tubs("SphereInt",0,0.5*sphere_diameter[whichSphere],0.5*phantom_sizeZ,0,360*deg);
+		
+		phantomRot->rotateX(90*deg);
+	}
 
 	G4SubtractionSolid* solidSphereShell=new G4SubtractionSolid("SphereLarge-SphereInt", solidSphereLarge, solidSphereInt);
 
@@ -244,7 +262,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											"PhantomShell");            //its name
 	
 	G4VPhysicalVolume* physPhantomShell =
-	new G4PVPlacement(0,                     //no rotation
+	new G4PVPlacement(phantomRot,                     //no rotation
 										G4ThreeVector(),       //at (0,0,0)
 										logicPhantomShell,            //its logical volume
 										"PhantomShell",               //its name
@@ -261,7 +279,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											"Phantom");            //its name
 	
 	G4VPhysicalVolume* physPhantomInt =
-	new G4PVPlacement(0,                     //no rotation
+	new G4PVPlacement(phantomRot,                     //no rotation
 										G4ThreeVector(),       //at (0,0,0)
 										logicPhantom,            //its logical volume
 										"Phantom",               //its name
@@ -284,7 +302,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											"SphereShell");            //its name
 	
 	G4VPhysicalVolume* physSphereShell =
-	new G4PVPlacement(0,                     //no rotation
+	new G4PVPlacement(phantomRot,                     //no rotation
 										spherePos,       //at (0,0,0)
 										logicSphereShell,            //its logical volume
 										"SphereShell",               //its name
@@ -299,7 +317,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 											"Sphere");            //its name
 	
 	G4VPhysicalVolume* physSphere =
-	new G4PVPlacement(0,                     //no rotation
+	new G4PVPlacement(phantomRot,                     //no rotation
 										spherePos,       //at (0,0,0)
 										logicSphere,            //its logical volume
 										"Sphere",               //its name

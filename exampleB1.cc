@@ -71,7 +71,7 @@ int main(int argc,char** argv)
 	G4UIExecutive* ui = 0;
 	
 	G4double x0Scan=0, CenterSphere=0, AbsorberDiam=0*mm,AbsorberThickness=1*mm, TBRvalue=1;
-	G4int FilterFlag=1, SourceChoice=6, IsotopeChoice=1, AbsorberMaterial=1, QuickFlagCommandLine=0;
+	G4int FilterFlag=1, SourceChoice=1, IsotopeChoice=1, AbsorberMaterial=1, QuickFlagCommandLine=0, SphereSelect=6;
 	
 	G4String MacroName ="";
 	G4String FileNameLabel="";
@@ -133,9 +133,9 @@ int main(int argc,char** argv)
 			{
 				CenterSphere=strtod (argv[++i], NULL);;
 			}
-			else if(option.compare("-Fil")==0)
+			else if(option.compare("-Sphere")==0)
 			{
-				FilterFlag=strtod (argv[++i], NULL);;
+				SphereSelect=strtod (argv[++i], NULL);;
 			}
 			else if(option.compare("-TBR")==0)
 			{
@@ -189,12 +189,12 @@ int main(int argc,char** argv)
 	
 	if (NoOfPrimToGen!=99) NoOfPrimToGenChangeFlag=true;
 	
-	if (SourceChoice==3) DTmis=400;
-	if (SourceChoice==10) DTmis=1000;
-
-	if (!NoOfPrimToGenChangeFlag && (SourceChoice==2 || SourceChoice==3 || (SourceChoice>=4 && SourceChoice<=7) || SourceChoice==10)) { // If still 99 it means I did not choose a precise value via command line, so let's compute it! -   To be fixed: what to do in case of PSr/Y
-		NoOfPrimToGen=DTmis*AttSorg[(int)SourceChoice-1];
-	}
+//	if (SourceChoice==3) DTmis=400;
+//	if (SourceChoice==10) DTmis=1000;
+//
+//	if (!NoOfPrimToGenChangeFlag && (SourceChoice==2 || SourceChoice==3 || (SourceChoice>=4 && SourceChoice<=7) || SourceChoice==10)) { // If still 99 it means I did not choose a precise value via command line, so let's compute it! -   To be fixed: what to do in case of PSr/Y
+//		NoOfPrimToGen=DTmis*AttSorg[(int)SourceChoice-1];
+//	}
 	G4cout<<"\n############## \nI WILL GENERATE n= "<<NoOfPrimToGen<<" primaries \n##############"<<G4endl;
 	if (QuickFlagCommandLine) QuickFlag=true;
 
@@ -204,7 +204,7 @@ int main(int argc,char** argv)
 	if (VisFlag) seed=12345; //If vis was requested same always the same seed to have reproducibility
 	G4Random::setTheSeed(seed);
 
-	G4int SourceSelect=SourceChoice;
+//	G4int SphereSelect=SourceChoice;
 	
 	G4String MaterialiAssorbitore[3]= {"Cu","Al","ABS"};
 	
@@ -219,22 +219,30 @@ int main(int argc,char** argv)
 //	else FileNameCommonPart.append("_NoAbs");
 //
 	//	FileNameCommonPart.append("_Fil" + std::to_string((G4int)FilterFlag));
-	if (SourceSelect<0) {//phantom
-		FileNameCommonPart.append("_F_s" + std::to_string(-(G4int)SourceSelect));
+	
+	if (SphereSelect>0) {//phantom NEMA
+		FileNameCommonPart.append("_s" + std::to_string((G4int)SphereSelect));
+	}else{//bistecca
+		FileNameCommonPart.append("_s2D"+ std::to_string(-(G4int)SphereSelect));
+	}
+	
+	
+	if (SourceChoice==2) {//phantom
+		FileNameCommonPart.append("_F");
 	}else{//sfere
-		FileNameCommonPart.append("_s" + std::to_string((G4int)SourceSelect));
+		FileNameCommonPart.append("_S");
 	}
 		//
 	if (IsotopeChoice==2) FileNameCommonPart.append("_Tc");
-//	if (SourceSelect==2) FileNameCommonPart.append("_ExtSr");
-//	if (SourceSelect==3) FileNameCommonPart.append("_ExtY_TBR"+ std::to_string((G4int)TBRvalue));
-//	if (SourceSelect==4) FileNameCommonPart.append("_PCo60");
-//	if (SourceSelect==5) FileNameCommonPart.append("_PNa22");
-//	if (SourceSelect==6) FileNameCommonPart.append("_PBa133");
-//	if (SourceSelect==7) FileNameCommonPart.append("_PCs137");
-//	if (SourceSelect==8) FileNameCommonPart.append("_FlatEle");
-//	if (SourceSelect==9) FileNameCommonPart.append("_FlatGamma");
-//	if (SourceSelect==10) FileNameCommonPart.append("_PNa22nude");
+//	if (SphereSelect==2) FileNameCommonPart.append("_ExtSr");
+//	if (SphereSelect==3) FileNameCommonPart.append("_ExtY_TBR"+ std::to_string((G4int)TBRvalue));
+//	if (SphereSelect==4) FileNameCommonPart.append("_PCo60");
+//	if (SphereSelect==5) FileNameCommonPart.append("_PNa22");
+//	if (SphereSelect==6) FileNameCommonPart.append("_PBa133");
+//	if (SphereSelect==7) FileNameCommonPart.append("_PCs137");
+//	if (SphereSelect==8) FileNameCommonPart.append("_FlatEle");
+//	if (SphereSelect==9) FileNameCommonPart.append("_FlatGamma");
+//	if (SphereSelect==10) FileNameCommonPart.append("_PNa22nude");
 //
 //	if (IsotopeChoice==1) FileNameCommonPart.append("_011");
 //	if (IsotopeChoice==2) FileNameCommonPart.append("_115");
@@ -261,7 +269,7 @@ int main(int argc,char** argv)
 #ifdef G4MULTITHREAD
 	  G4MTRunManager* runManager = new G4MTRunManager;
 //	runManager->SetNumberOfThreads( G4Threading::G4GetNumberOfCores() );
-	G4int numOfThreads=Verbose>0?1:8;
+	G4int numOfThreads=(Verbose>0||VisFlag)?1:8;
 	runManager->SetNumberOfThreads( numOfThreads );
 	#else
 	G4RunManager* runManager = new G4RunManager;
@@ -271,7 +279,7 @@ int main(int argc,char** argv)
 	// Set mandatory initialization classes
 	// Detector construction
 
-	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, CenterSphere, AbsorberDiam, AbsorberThickness, AbsorberMaterial, FilterFlag, SourceChoice, IsotopeChoice, QuickFlag, PixelThickness)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
+	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, CenterSphere, AbsorberDiam, AbsorberThickness, AbsorberMaterial, FilterFlag, SphereSelect, IsotopeChoice, QuickFlag, PixelThickness)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
 	
 	// Physics list
 	//G4VModularPhysicsList* physicsList = new QBBC;
@@ -284,8 +292,8 @@ int main(int argc,char** argv)
 	runManager->SetUserInitialization(physicsList);
 	
 	// User action initialization
-	//	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, CenterSphere, CollHoleDiam, FilterFlag, primFile, TBRvalue,SourceSelect, SourceSelect));
-	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, CenterSphere, AbsorberDiam, FilterFlag, TBRvalue, SourceSelect, IsotopeChoice, OutFileName));
+	//	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, CenterSphere, CollHoleDiam, FilterFlag, primFile, TBRvalue,SphereSelect, SphereSelect));
+	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, CenterSphere, AbsorberDiam, FilterFlag, TBRvalue, SphereSelect, IsotopeChoice, OutFileName));
 	
 	// Initialize visualization
 	//
@@ -309,27 +317,25 @@ int main(int argc,char** argv)
 			G4String command = "/control/execute ";
 			UImanager->ApplyCommand(command+MacroName);
 		} else {
-			
-			if (SourceSelect<0) { //phantom
-				UImanager->ApplyCommand("/gps/pos/type Volume");
-				UImanager->ApplyCommand("/gps/pos/centre 0. 0. 0. cm");
-				UImanager->ApplyCommand("/gps/pos/shape Cylinder");
-				UImanager->ApplyCommand("/gps/pos/radius 30 cm");
-				UImanager->ApplyCommand("/gps/pos/halfz 10 cm");
+			UImanager->ApplyCommand("/gps/pos/type Volume");
+			UImanager->ApplyCommand("/gps/pos/centre 0. 0. 0. cm");
+			UImanager->ApplyCommand("/gps/pos/shape Para");
+
+			if (SourceChoice==2) { //phantom
+				UImanager->ApplyCommand("/gps/pos/halfx 30 cm");
+				UImanager->ApplyCommand("/gps/pos/halfy 30 cm");
+				UImanager->ApplyCommand("/gps/pos/halfz 30 cm");
 				UImanager->ApplyCommand("/gps/pos/confine Phantom");
 			} else { //spheres
-					
-					UImanager->ApplyCommand("/gps/pos/type Volume");
-					UImanager->ApplyCommand("/gps/pos/centre 0. 0. 0. cm");
-					UImanager->ApplyCommand("/gps/pos/shape Sphere");
-					UImanager->ApplyCommand("/gps/pos/radius 2 cm");
+				UImanager->ApplyCommand("/gps/pos/halfx 2 cm");
+				UImanager->ApplyCommand("/gps/pos/halfy 2 cm");
+				UImanager->ApplyCommand("/gps/pos/halfz 2 cm");
 					UImanager->ApplyCommand("/gps/pos/confine Sphere");
 			}
 			UImanager->ApplyCommand("/gps/ene/type/Mono");
 			UImanager->ApplyCommand("/gps/ene/mono 0 MeV");
 			UImanager->ApplyCommand("/tracking/verbose " + std::to_string(Verbose));
 			UImanager->ApplyCommand("/run/beamOn " + std::to_string(NoOfPrimToGen));
-			//			UImanager->ApplyCommand("/run/beamOn 100");
 		}
 	}
 	else {
