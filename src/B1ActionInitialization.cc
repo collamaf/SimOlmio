@@ -38,8 +38,8 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1ActionInitialization::B1ActionInitialization(G4double x0, G4double CenterSphere, G4double CollHoleDiam, G4int FilterFlag, G4double TBR/*, G4bool SrSourceFlag*/, G4int SourceSelect, G4int SensorChoice, G4String FileName)
-  : G4VUserActionInitialization(), fX0Scan(x0), fCenterSphere(CenterSphere), fCollHoleDiam(CollHoleDiam), fFilterFlag(FilterFlag), fTBR(TBR), /*fSrSourceFlag(SrSourceFlag),*/ 	fSourceSelect(SourceSelect), fSensorChoice(SensorChoice), fFileName(FileName)
+B1ActionInitialization::B1ActionInitialization(G4double x0, G4double CenterSphere, G4double CollHoleDiam, G4int FilterFlag, G4double TBR/*, G4bool SrSourceFlag*/, G4int SourceSelect, G4int IsotopeChoice, G4String FileName)
+  : G4VUserActionInitialization(), fX0Scan(x0), fCenterSphere(CenterSphere), fCollHoleDiam(CollHoleDiam), fFilterFlag(FilterFlag), fTBR(TBR), /*fSrSourceFlag(SrSourceFlag),*/ 	fSourceSelect(SourceSelect), fIsotopeChoice(IsotopeChoice), fFileName(FileName)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -71,7 +71,7 @@ void B1ActionInitialization::Build() const
   SetUserAction(new B1SteppingAction(eventAction, runAction, fCollHoleDiam));
 	
 //	B1PrimaryGeneratorAction* primAction= new B1PrimaryGeneratorAction(eventAction, TRUE, fSrSourceFlag, TRUE, fTBR, fSrSourceFlag); // Y, Sr, PrintDist, TBR sorge
-	B1PrimaryGeneratorAction* primAction= new B1PrimaryGeneratorAction(eventAction,  fTBR, fSourceSelect);
+	B1PrimaryGeneratorAction* primAction= new B1PrimaryGeneratorAction(eventAction,  fTBR, fIsotopeChoice);
 	SetUserAction(primAction);
 	SetUserAction(new B1StackingAction(runAction, eventAction));
 }  

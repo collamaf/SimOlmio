@@ -71,7 +71,7 @@ int main(int argc,char** argv)
 	G4UIExecutive* ui = 0;
 	
 	G4double x0Scan=0, CenterSphere=0, AbsorberDiam=0*mm,AbsorberThickness=1*mm, TBRvalue=1;
-	G4int FilterFlag=1, SourceChoice=6, SensorChoice=1, AbsorberMaterial=1, QuickFlagCommandLine=0;
+	G4int FilterFlag=1, SourceChoice=6, IsotopeChoice=1, AbsorberMaterial=1, QuickFlagCommandLine=0;
 	
 	G4String MacroName ="";
 	G4String FileNameLabel="";
@@ -157,9 +157,9 @@ int main(int argc,char** argv)
 			{
 				Verbose=stoi (argv[++i], NULL);;
 			}
-			else if(option.compare("-Sensor")==0)
+			else if(option.compare("-Isotope")==0)
 			{
-				SensorChoice=strtod (argv[++i], NULL);;
+				IsotopeChoice=strtod (argv[++i], NULL);;
 			}
 			else if(option.compare("-PixT")==0)
 			{
@@ -225,7 +225,7 @@ int main(int argc,char** argv)
 		FileNameCommonPart.append("_s" + std::to_string((G4int)SourceSelect));
 	}
 		//
-//	if (SourceSelect==1) FileNameCommonPart.append("_PSr");
+	if (IsotopeChoice==2) FileNameCommonPart.append("_Tc");
 //	if (SourceSelect==2) FileNameCommonPart.append("_ExtSr");
 //	if (SourceSelect==3) FileNameCommonPart.append("_ExtY_TBR"+ std::to_string((G4int)TBRvalue));
 //	if (SourceSelect==4) FileNameCommonPart.append("_PCo60");
@@ -236,9 +236,9 @@ int main(int argc,char** argv)
 //	if (SourceSelect==9) FileNameCommonPart.append("_FlatGamma");
 //	if (SourceSelect==10) FileNameCommonPart.append("_PNa22nude");
 //
-//	if (SensorChoice==1) FileNameCommonPart.append("_011");
-//	if (SensorChoice==2) FileNameCommonPart.append("_115");
-//	if (SensorChoice==3) FileNameCommonPart.append("_60035");
+//	if (IsotopeChoice==1) FileNameCommonPart.append("_011");
+//	if (IsotopeChoice==2) FileNameCommonPart.append("_115");
+//	if (IsotopeChoice==3) FileNameCommonPart.append("_60035");
 //
 //		FileNameCommonPart.append("_PxT" + std::to_string((G4int)(100*PixelThickness)));
 //
@@ -261,7 +261,8 @@ int main(int argc,char** argv)
 #ifdef G4MULTITHREAD
 	  G4MTRunManager* runManager = new G4MTRunManager;
 //	runManager->SetNumberOfThreads( G4Threading::G4GetNumberOfCores() );
-	runManager->SetNumberOfThreads( 8 );
+	G4int numOfThreads=Verbose>0?1:8;
+	runManager->SetNumberOfThreads( numOfThreads );
 	#else
 	G4RunManager* runManager = new G4RunManager;
 	#endif
@@ -270,7 +271,7 @@ int main(int argc,char** argv)
 	// Set mandatory initialization classes
 	// Detector construction
 
-	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, CenterSphere, AbsorberDiam, AbsorberThickness, AbsorberMaterial, FilterFlag, SourceChoice, SensorChoice, QuickFlag, PixelThickness)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
+	runManager->SetUserInitialization(new B1DetectorConstruction(x0Scan, CenterSphere, AbsorberDiam, AbsorberThickness, AbsorberMaterial, FilterFlag, SourceChoice, IsotopeChoice, QuickFlag, PixelThickness)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
 	
 	// Physics list
 	//G4VModularPhysicsList* physicsList = new QBBC;
@@ -284,7 +285,7 @@ int main(int argc,char** argv)
 	
 	// User action initialization
 	//	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, CenterSphere, CollHoleDiam, FilterFlag, primFile, TBRvalue,SourceSelect, SourceSelect));
-	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, CenterSphere, AbsorberDiam, FilterFlag, TBRvalue, SourceSelect, SensorChoice, OutFileName));
+	runManager->SetUserInitialization(new B1ActionInitialization(x0Scan, CenterSphere, AbsorberDiam, FilterFlag, TBRvalue, SourceSelect, IsotopeChoice, OutFileName));
 	
 	// Initialize visualization
 	//
@@ -324,6 +325,8 @@ int main(int argc,char** argv)
 					UImanager->ApplyCommand("/gps/pos/radius 2 cm");
 					UImanager->ApplyCommand("/gps/pos/confine Sphere");
 			}
+			UImanager->ApplyCommand("/gps/ene/type/Mono");
+			UImanager->ApplyCommand("/gps/ene/mono 0 MeV");
 			UImanager->ApplyCommand("/tracking/verbose " + std::to_string(Verbose));
 			UImanager->ApplyCommand("/run/beamOn " + std::to_string(NoOfPrimToGen));
 			//			UImanager->ApplyCommand("/run/beamOn 100");

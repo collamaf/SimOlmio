@@ -51,9 +51,9 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1DetectorConstruction::B1DetectorConstruction(G4double x0, G4double CenterSphere, G4double CollHoleDiam, G4double CollThickness, G4int CollMaterial, G4int FilterFlag, G4double SourceSelect, G4int SensorChoice, G4bool QuickFlag, G4double PxThickness)
+B1DetectorConstruction::B1DetectorConstruction(G4double x0, G4double CenterSphere, G4double CollHoleDiam, G4double CollThickness, G4int CollMaterial, G4int FilterFlag, G4double SourceSelect, G4int IsotopeChoice, G4bool QuickFlag, G4double PxThickness)
 : G4VUserDetectorConstruction(),
-fScoringVolume(0), fX0Scan(x0), fCenterSphere(CenterSphere), fCollHoleDiam(CollHoleDiam), fCollThickness(CollThickness), fCollMaterial(CollMaterial), fFilterFlag(FilterFlag), fSourceSelect(SourceSelect), fSensorChoice(SensorChoice), fQuickFlag(QuickFlag), fPixelThickness(PxThickness)
+fScoringVolume(0), fX0Scan(x0), fCenterSphere(CenterSphere), fCollHoleDiam(CollHoleDiam), fCollThickness(CollThickness), fCollMaterial(CollMaterial), fFilterFlag(FilterFlag), fSourceSelect(SourceSelect), fIsotopeChoice(IsotopeChoice), fQuickFlag(QuickFlag), fPixelThickness(PxThickness)
 { }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -100,7 +100,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	// Glass resin for sensor filter
 	//##########################
 	density = 4.000*g/cm3; //4 for MT9V011, 2.43 for MT9V115
-	if (fSensorChoice==2) density=2.43*g/cm3;
+	if (fIsotopeChoice==2) density=2.43*g/cm3;
 	G4Material* Resin = new G4Material (name="Resin", density, ncomponents=3);
 	Resin->AddElement (elH, natoms=30);
 	Resin->AddElement (elC, natoms=20);

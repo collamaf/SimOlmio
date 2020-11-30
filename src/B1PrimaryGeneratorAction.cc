@@ -64,10 +64,10 @@ using std::ios;
 using std::endl;
 
 
-B1PrimaryGeneratorAction::B1PrimaryGeneratorAction(B1EventAction* eventAction, G4double TBR, G4int SourceSelect)
+B1PrimaryGeneratorAction::B1PrimaryGeneratorAction(B1EventAction* eventAction, G4double TBR, G4int IsotopeSelect)
 : G4VUserPrimaryGeneratorAction(),
 fGPS(0) ,
-evtPrimAction(eventAction), fTBR(TBR), fSourceSelect(SourceSelect)
+evtPrimAction(eventAction), fTBR(TBR), fIsotopeSelect(IsotopeSelect)
 
 {
 	G4int n_particle = 1;
@@ -92,43 +92,25 @@ B1PrimaryGeneratorAction::~B1PrimaryGeneratorAction()
 
 void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 {
-
+//	G4cout<<"AAAAAAAA "<<fIsotopeSelect<<G4endl;
 	
-	switch (fSourceSelect) {
-		case 3:
-			fSourceZ=39;
-			fSourceA=90;
-			break;
-
-		case 4:
-			fSourceZ=27;
-			fSourceA=60;
-			break;
-
-		case 5:
-		case 10:
-			fSourceZ=11;
-			fSourceA=22;
+	G4double ionCharge   = 0.*eplus;
+	G4double excitEnergy = 0.*keV;
+	
+	switch (fIsotopeSelect) {
+		case 2: //Tc
+			fSourceZ=43;
+			fSourceA=99;
+			excitEnergy=142.69*keV;
 			break;
 			
-		case 6:
-			fSourceZ=56;
-			fSourceA=133;
-			break;
-
-		case 7:
-			fSourceZ=55;
-			fSourceA=137;
-			break;
-			
-		default: //Sr
+		default: //Ho
 			fSourceZ=67;
 			fSourceA=166;
 			break;
 	}
 	
-	G4double ionCharge   = 0.*eplus;
-	G4double excitEnergy = 0.*keV;
+
 
 	G4ParticleDefinition* sourceION
 	= G4IonTable::GetIonTable()->GetIon(fSourceZ,fSourceA,excitEnergy);

@@ -51,7 +51,7 @@ class B1PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
 public:
 	//    B1PrimaryGeneratorAction(B1EventAction* eventAction);
-	B1PrimaryGeneratorAction(B1EventAction* eventAction, G4double TBR=1, G4int SourceSelect=1);
+	B1PrimaryGeneratorAction(B1EventAction* eventAction, G4double TBR=1, G4int IsotopeSelect=1);
 	virtual ~B1PrimaryGeneratorAction();
 	
 	// method from the base class
@@ -76,7 +76,7 @@ private:
 	G4double fRadiusMax;
 	G4double fRadiusMin;
 	G4double fTBR;
-	G4int fSourceSelect;
+	G4int fIsotopeSelect;
 	
 	G4int fSourceZ, fSourceA;
 	

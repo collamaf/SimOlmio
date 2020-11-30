@@ -57,7 +57,7 @@ protected:
 	G4double fTBR;
 //	G4bool fSrSourceFlag;
 	G4int fSourceSelect;
-	G4int fSensorChoice;
+	G4int fIsotopeChoice;
 	G4String fFileName;
 };
 
