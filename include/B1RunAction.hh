@@ -103,6 +103,7 @@ public:
 	std::vector<G4int>& GetRunPreGCOrigReg() {return fRunPreGCOrigReg;}
 	std::vector<G4int>& GetRunPreGCPrestepReg() {return fRunPreGCPrestepReg;}
 	std::vector<G4int>& GetRunPreGCCreatorProcess() {return fRunPreGCCreatorProcess;}
+	std::vector<G4int>& GetRunPreGCCptReg() {return fRunPreGCCptReg;}
 
 	
 	std::vector<G4double>& GetRunPreFilterEn() {return fRunPreFilterEn; }
@@ -189,6 +190,7 @@ private:
 	std::vector<G4int> fRunPreGCPrestepReg;
 	std::vector<G4int> fRunPreGCOrigReg;
 	std::vector<G4int> fRunPreGCCreatorProcess;
+	std::vector<G4int> fRunPreGCCptReg;
 
 	std::vector<G4double> fRunEnExit;
 	std::vector<G4double> fRunXExit;

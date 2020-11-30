@@ -227,6 +227,7 @@ void B1RunAction::CreateHistogram()
 	analysisManager->CreateNtupleIColumn(0,"PreGCOrigReg", fRunPreGCOrigReg); //4
 	analysisManager->CreateNtupleIColumn(0,"PreGCPrestepReg", fRunPreGCPrestepReg); //4
 	analysisManager->CreateNtupleIColumn(0,"PreGCCreatorProcess", fRunPreGCCreatorProcess); //4
+	analysisManager->CreateNtupleIColumn(0,"PreGCCptReg", fRunPreGCCptReg); //4
 //	analysisManager->CreateNtupleDColumn(0,"InCmosTrackN");                   //5
 //	analysisManager->CreateNtupleDColumn(0,"InCmosPart", fRunPartCmos); //6
 //	analysisManager->CreateNtupleDColumn(0,"InCmosEn", fRunEnCmos); //7

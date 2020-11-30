@@ -119,6 +119,7 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	(fRunAction->GetRunPreGCPrestepReg()).clear();
 	(fRunAction->GetRunPreGCOrigReg()).clear();
 	(fRunAction->GetRunPreGCCreatorProcess()).clear();
+	(fRunAction->GetRunPreGCCptReg()).clear();
 
 	(fRunAction->SetMotherIsotope(-10));
 	(fRunAction->SetMotherEnergy(-10));

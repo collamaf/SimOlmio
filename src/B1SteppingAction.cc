@@ -74,6 +74,10 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	
 	G4bool newDebug = false;
 	
+	if (step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()=="compt") {
+		(runStepAction->GetRunPreGCCptReg()).push_back(1);
+	}
+	
 #pragma mark What Enters CMOS
 	// ###########################################################################
 	// ###################### ENTERING CMOS
