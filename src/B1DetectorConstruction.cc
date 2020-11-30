@@ -159,15 +159,16 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	G4double phantom_thickness = 2.5*mm;
 	G4double sphere_thickness = 5*mm;
+	
+	G4int whichSphere=abs(G4int(fSourceSelect))-1;
 
 	G4double sphere_diameter[6]= {
 		10*mm, 13*mm, 17*mm, 22*mm, 28*mm, 37*mm
 	};
-	
 	G4double distSphereSurface=70*mm;
 	G4double distGammaCamera=25*cm;
 	
-	G4double sphereCenterZ=0.5*phantom_sizeZ-distSphereSurface-0.5*sphere_diameter[G4int(fSourceSelect)];
+	G4double sphereCenterZ=0.5*phantom_sizeZ-distSphereSurface-0.5*sphere_diameter[whichSphere];
 	if (fCenterSphere==0) sphereCenterZ=0*cm; //sfera centrata
 	G4ThreeVector spherePos= G4ThreeVector(0,0,sphereCenterZ);
 	G4ThreeVector gammaCameraPos= G4ThreeVector(0,phantom_sizeY*0.5+distGammaCamera,0);
@@ -224,9 +225,9 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	new G4EllipticalTube("PhantomInt",                       //its name
 						0.5*phantom_sizeX, 0.5*phantom_sizeY, 0.5*phantom_sizeZ);     //its size
 	
-	G4Orb* solidSphereLarge= new G4Orb("SphereLarge", 0.5*sphere_diameter[G4int(fSourceSelect)]+sphere_thickness);
+	G4Orb* solidSphereLarge= new G4Orb("SphereLarge", 0.5*sphere_diameter[whichSphere]+sphere_thickness);
 	
-	G4Orb* solidSphereInt= new G4Orb("SphereInt", 0.5*sphere_diameter[G4int(fSourceSelect)]);
+	G4Orb* solidSphereInt= new G4Orb("SphereInt", 0.5*sphere_diameter[whichSphere]);
 
 	G4SubtractionSolid* solidSphereShell=new G4SubtractionSolid("SphereLarge-SphereInt", solidSphereLarge, solidSphereInt);
 

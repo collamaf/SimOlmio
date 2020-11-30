@@ -71,7 +71,7 @@ int main(int argc,char** argv)
 	G4UIExecutive* ui = 0;
 	
 	G4double x0Scan=0, CenterSphere=0, AbsorberDiam=0*mm,AbsorberThickness=1*mm, TBRvalue=1;
-	G4int FilterFlag=1, SourceChoice=5, SensorChoice=1, AbsorberMaterial=1, QuickFlagCommandLine=0;
+	G4int FilterFlag=1, SourceChoice=6, SensorChoice=1, AbsorberMaterial=1, QuickFlagCommandLine=0;
 	
 	G4String MacroName ="";
 	G4String FileNameLabel="";
@@ -219,8 +219,12 @@ int main(int argc,char** argv)
 //	else FileNameCommonPart.append("_NoAbs");
 //
 	//	FileNameCommonPart.append("_Fil" + std::to_string((G4int)FilterFlag));
+	if (SourceSelect<0) {//phantom
+		FileNameCommonPart.append("_F_s" + std::to_string(-(G4int)SourceSelect));
+	}else{//sfere
 		FileNameCommonPart.append("_s" + std::to_string((G4int)SourceSelect));
-//
+	}
+		//
 //	if (SourceSelect==1) FileNameCommonPart.append("_PSr");
 //	if (SourceSelect==2) FileNameCommonPart.append("_ExtSr");
 //	if (SourceSelect==3) FileNameCommonPart.append("_ExtY_TBR"+ std::to_string((G4int)TBRvalue));
@@ -304,6 +308,22 @@ int main(int argc,char** argv)
 			G4String command = "/control/execute ";
 			UImanager->ApplyCommand(command+MacroName);
 		} else {
+			
+			if (SourceSelect==-1) { //phantom
+				UImanager->ApplyCommand("/gps/pos/type Volume");
+				UImanager->ApplyCommand("/gps/pos/centre 0. 0. 0. cm");
+				UImanager->ApplyCommand("/gps/pos/shape Cylinder");
+				UImanager->ApplyCommand("/gps/pos/radius 30 cm");
+				UImanager->ApplyCommand("/gps/pos/halfz 10 cm");
+				UImanager->ApplyCommand("/gps/pos/confine Phantom");
+			} else { //spheres
+					
+					UImanager->ApplyCommand("/gps/pos/type Volume");
+					UImanager->ApplyCommand("/gps/pos/centre 0. 0. 0. cm");
+					UImanager->ApplyCommand("/gps/pos/shape Sphere");
+					UImanager->ApplyCommand("/gps/pos/radius 2 cm");
+					UImanager->ApplyCommand("/gps/pos/confine Sphere");
+			}
 			UImanager->ApplyCommand("/tracking/verbose " + std::to_string(Verbose));
 			UImanager->ApplyCommand("/run/beamOn " + std::to_string(NoOfPrimToGen));
 			//			UImanager->ApplyCommand("/run/beamOn 100");
