@@ -310,7 +310,7 @@ int main(int argc,char** argv)
 			UImanager->ApplyCommand(command+MacroName);
 		} else {
 			
-			if (SourceSelect==-1) { //phantom
+			if (SourceSelect<0) { //phantom
 				UImanager->ApplyCommand("/gps/pos/type Volume");
 				UImanager->ApplyCommand("/gps/pos/centre 0. 0. 0. cm");
 				UImanager->ApplyCommand("/gps/pos/shape Cylinder");
