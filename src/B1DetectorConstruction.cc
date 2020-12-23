@@ -200,7 +200,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		offsetAngle=-detAngle;
 	}
 		
-	G4double detPosAngle[3]={offsetAngle+0*rad, offsetAngle+detAngle*rad, offsetAngle-detAngle*rad};
+	G4double detPosAngle[3]={offsetAngle-detAngle*rad,offsetAngle+0*rad, offsetAngle+detAngle*rad};
 
 	G4ThreeVector posDet1=G4ThreeVector(phantom_sizeY*0.5*sin(detPosAngle[0]),
 																			phantom_sizeY*0.5*cos(detPosAngle[0])+detector_sizeZ*0.5+safeDistance,
@@ -411,7 +411,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	new G4PVPlacement(detRot1,                     //no rotation
 										posDet1,       //at (0,0,0)
 										logicDet1,            //its logical volume
-										"Detector1",               //its name
+										"Detector",               //its name
 										logicWorld,                     //its mother  volume
 										false,                 //no boolean operation
 										0,                     //copy number
@@ -421,20 +421,20 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		new G4PVPlacement(detRot2,                     //no rotation
 											posDet2,       //at (0,0,0)
 											logicDet1,            //its logical volume
-											"Detector2",               //its name
+											"Detector",               //its name
 											logicWorld,                     //its mother  volume
 											false,                 //no boolean operation
-											0,                     //copy number
+											1,                     //copy number
 											checkOverlaps);        //overlaps checking
 		
 		G4VPhysicalVolume* physDet3 =
 		new G4PVPlacement(detRot3,                     //no rotation
 											posDet3,       //at (0,0,0)
 											logicDet1,            //its logical volume
-											"Detector3",               //its name
+											"Detector",               //its name
 											logicWorld,                     //its mother  volume
 											false,                 //no boolean operation
-											0,                     //copy number
+											2,                     //copy number
 											checkOverlaps);        //overlaps checking
 		
 	}
