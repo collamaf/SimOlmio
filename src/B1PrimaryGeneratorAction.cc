@@ -98,6 +98,16 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	G4double excitEnergy = 0.*keV;
 	
 	switch (fIsotopeSelect) {
+		case 4: //64Cu
+			fSourceZ=29;
+			fSourceA=64;
+			break;
+			
+		case 3: //131I
+			fSourceZ=53;
+			fSourceA=131;
+			break;			
+			
 		case 2: //Tc
 			fSourceZ=43;
 			fSourceA=99;
