@@ -26,6 +26,22 @@ make
 ./exampleB1 -Sphere -6 -Source 2 -Isotope 2 -NPrim 1000
 ```
 
+### Misure all'IFO per WIDMApp (Dec 2020):
+- Sfera r=8.5mm con 99mTc:
+```
+./exampleB1 -Sphere 3 -Source 1  -SphereDistY 55 -DetConf 1 -Isotope 2 -NPrim 1000000
+```
+
+- Sfera r=11mm con 64Cu:
+```
+./exampleB1 -Sphere 4 -Source 1  -SphereDistY 70 -DetConf 3 -Isotope 4 -NPrim 1000000
+```
+
+- Sfera r=1mm con 131I (approssimazione rozza della pasticca di Iodio):
+```
+./exampleB1 -Sphere 1 -Source 1  -SphereDistY 11 -DetConf 2 -Isotope 3 -NPrim 1000000
+```
+
 
 ### Source Choice:
 1 - Activate spheres/cylinders
@@ -99,6 +115,9 @@ A root file named CMOSmc_{XX}.root is created, reporting the several parameters 
 - UPDATE Readme from old CMOS sim
 - Manually merge root files at the end (and delete temporary root files) since the automatic G4 way fails to merge vectors
 - New argument: SphereDistY. If !=0 is the distance from the NEMA surface to the sphere center along Y
+- Possibility to add detectors like IFO WIDMApp studies: if DetConf!=0 3 detectors are placed, and 3 configs can be chosen via DetConf1, 2 or 3. For now score only particles entering these hollow detectors.
+- Add 64Cu and 131I sources
+
 
 ## TO DO's
 

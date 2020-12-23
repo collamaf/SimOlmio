@@ -237,8 +237,8 @@ int main(int argc,char** argv)
 		//
 	if (IsotopeChoice==1) FileNameCommonPart.append("_Ho");
 	if (IsotopeChoice==2) FileNameCommonPart.append("_Tc");
-	if (IsotopeChoice==3) FileNameCommonPart.append("_Cu");
-	if (IsotopeChoice==4) FileNameCommonPart.append("_I");
+	if (IsotopeChoice==3) FileNameCommonPart.append("_I");
+	if (IsotopeChoice==4) FileNameCommonPart.append("_Cu");
 //	if (SphereSelect==2) FileNameCommonPart.append("_ExtSr");
 //	if (SphereSelect==3) FileNameCommonPart.append("_ExtY_TBR"+ std::to_string((G4int)TBRvalue));
 //	if (SphereSelect==4) FileNameCommonPart.append("_PCo60");
@@ -331,9 +331,9 @@ int main(int argc,char** argv)
 				UImanager->ApplyCommand("/gps/pos/halfz 30 cm");
 				UImanager->ApplyCommand("/gps/pos/confine Phantom");
 			} else { //spheres
-				UImanager->ApplyCommand("/gps/pos/halfx 8 cm");
-				UImanager->ApplyCommand("/gps/pos/halfy 8 cm");
-				UImanager->ApplyCommand("/gps/pos/halfz 8 cm");
+				UImanager->ApplyCommand("/gps/pos/halfx 4 cm");
+				UImanager->ApplyCommand("/gps/pos/halfy 14 cm");
+				UImanager->ApplyCommand("/gps/pos/halfz 2 cm");
 					UImanager->ApplyCommand("/gps/pos/confine Sphere");
 			}
 			UImanager->ApplyCommand("/gps/ene/type/Mono");
