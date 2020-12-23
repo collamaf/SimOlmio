@@ -62,8 +62,8 @@ fEdkin("Edkin", 0.)
 	accumulableManager->RegisterAccumulable(fEdep2);
 	accumulableManager->RegisterAccumulable(fEdkin);
 
-	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-	analysisManager->SetNtupleMerging(true);
+//	G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+//	analysisManager->SetNtupleMerging(true);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

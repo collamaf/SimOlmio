@@ -343,6 +343,22 @@ int main(int argc,char** argv)
 		ui->SessionStart();
 		delete ui;
 	}
+	
+#ifdef G4MULTITHREADED
+	// Manually merge root files at the end (and delete temporary root files) since the automatic G4 way fails to merge vectors
+	G4cout<<"hadd -f "<< OutFileName<<".root ";
+	G4String tempFileList="";
+	for (int iThread=0; iThread<numOfThreads; iThread++) {
+		tempFileList.append(OutFileName+ "_t"+to_string(iThread) + ".root ");
+	}
+	G4String comandoHadd="hadd -f  " + OutFileName + ".root " + tempFileList;
+	G4String comandoRm="rm " + tempFileList;
+
+	system(comandoHadd);
+	system(comandoRm);
+
+#endif
+	
 
 	delete visManager;
 	delete runManager;
