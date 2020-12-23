@@ -52,7 +52,7 @@ public:
 	
 protected:
 	G4LogicalVolume*  fScoringVolume;
-	G4double fX0Scan;
+	G4double fsphereDistY;
 	G4double fCenterSphere;
 	G4double fCollHoleDiam;
 	G4double fCollThickness;

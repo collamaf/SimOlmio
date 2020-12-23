@@ -98,7 +98,7 @@ A root file named CMOSmc_{XX}.root is created, reporting the several parameters 
 2020.12.23 by collamaf
 - UPDATE Readme from old CMOS sim
 - Manually merge root files at the end (and delete temporary root files) since the automatic G4 way fails to merge vectors
-
+- New argument: SphereDistY. If !=0 is the distance from the NEMA surface to the sphere center along Y
 
 ## TO DO's
 

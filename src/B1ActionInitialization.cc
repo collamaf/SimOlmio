@@ -38,8 +38,8 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1ActionInitialization::B1ActionInitialization(G4double x0, G4double CenterSphere, G4double CollHoleDiam, G4int FilterFlag, G4double TBR/*, G4bool SrSourceFlag*/, G4int SphereSelect, G4int IsotopeChoice, G4String FileName)
-  : G4VUserActionInitialization(), fX0Scan(x0), fCenterSphere(CenterSphere), fCollHoleDiam(CollHoleDiam), fFilterFlag(FilterFlag), fTBR(TBR), /*fSrSourceFlag(SrSourceFlag),*/ 	fSphereSelect(SphereSelect), fIsotopeChoice(IsotopeChoice), fFileName(FileName)
+B1ActionInitialization::B1ActionInitialization(G4double sphereDistY, G4double CenterSphere, G4double CollHoleDiam, G4int FilterFlag, G4double TBR/*, G4bool SrSourceFlag*/, G4int SphereSelect, G4int IsotopeChoice, G4String FileName)
+  : G4VUserActionInitialization(), fsphereDistY(sphereDistY), fCenterSphere(CenterSphere), fCollHoleDiam(CollHoleDiam), fFilterFlag(FilterFlag), fTBR(TBR), /*fSrSourceFlag(SrSourceFlag),*/ 	fSphereSelect(SphereSelect), fIsotopeChoice(IsotopeChoice), fFileName(FileName)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -60,7 +60,7 @@ void B1ActionInitialization::BuildForMaster() const
 void B1ActionInitialization::Build() const
 {
 //  SetUserAction(new B1PrimaryGeneratorAction(runAction));
-	G4cout<<"PROVA Action Init "<<fX0Scan<<G4endl;
+	G4cout<<"PROVA Action Init "<<fsphereDistY<<G4endl;
 
   B1RunAction* runAction = new B1RunAction(fFileName);
   SetUserAction(runAction);

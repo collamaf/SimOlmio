@@ -51,9 +51,9 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1DetectorConstruction::B1DetectorConstruction(G4double x0, G4double CenterSphere, G4double CollHoleDiam, G4double CollThickness, G4int CollMaterial, G4int FilterFlag, G4double SphereSelect, G4int IsotopeChoice, G4bool QuickFlag, G4double PxThickness)
+B1DetectorConstruction::B1DetectorConstruction(G4double sphereDistY, G4double CenterSphere, G4double CollHoleDiam, G4double CollThickness, G4int CollMaterial, G4int FilterFlag, G4double SphereSelect, G4int IsotopeChoice, G4bool QuickFlag, G4double PxThickness)
 : G4VUserDetectorConstruction(),
-fScoringVolume(0), fX0Scan(x0), fCenterSphere(CenterSphere), fCollHoleDiam(CollHoleDiam), fCollThickness(CollThickness), fCollMaterial(CollMaterial), fFilterFlag(FilterFlag), fSphereSelect(SphereSelect), fIsotopeChoice(IsotopeChoice), fQuickFlag(QuickFlag), fPixelThickness(PxThickness)
+fScoringVolume(0), fsphereDistY(sphereDistY), fCenterSphere(CenterSphere), fCollHoleDiam(CollHoleDiam), fCollThickness(CollThickness), fCollMaterial(CollMaterial), fFilterFlag(FilterFlag), fSphereSelect(SphereSelect), fIsotopeChoice(IsotopeChoice), fQuickFlag(QuickFlag), fPixelThickness(PxThickness)
 { }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -171,7 +171,11 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	
 	G4double sphereCenterZ=0.5*phantom_sizeZ-distSphereSurface-0.5*sphere_diameter[whichSphere];
 	if (fCenterSphere==0) sphereCenterZ=0*cm; //sfera centrata
-	G4ThreeVector spherePos= G4ThreeVector(0,0,sphereCenterZ);
+
+	G4double sphereCenterY=0*cm;
+	if (fsphereDistY!=0) sphereCenterY=phantom_sizeY*0.5-fsphereDistY*mm;
+
+	G4ThreeVector spherePos= G4ThreeVector(0,sphereCenterY,sphereCenterZ);
 	G4ThreeVector gammaCameraPos= G4ThreeVector(0,phantom_sizeY*0.5+distGammaCamera,0);
 	
 	G4double gammaCamera_sizeXZ=100*cm;

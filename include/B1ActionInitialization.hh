@@ -50,7 +50,7 @@ public:
 
 	
 protected:
-	G4double fX0Scan;
+	G4double fsphereDistY;
 	G4double fCenterSphere;
 	G4double fCollHoleDiam;
 	G4int fFilterFlag;
