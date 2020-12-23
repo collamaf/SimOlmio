@@ -156,6 +156,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double phantom_sizeX = 30*cm;
 	G4double phantom_sizeY = 22*cm;
 	G4double phantom_sizeZ  = 18*cm;
+	G4double steak_thickness= 3*cm;
 	
 	G4double phantom_thickness = 2.5*mm;
 	G4double sphere_thickness = 5*mm;
@@ -236,13 +237,13 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		solidSphereInt= new G4Orb("SphereInt", 0.5*sphere_diameter[whichSphere]);
 		
 	} else { //fantoccio simil bistecca
-		solidPhantomLarge =	new G4Tubs("PhantomLarge",0,0.5*phantom_sizeX+phantom_thickness, 0.5*phantom_sizeZ+phantom_thickness,0*deg,360*deg);     //its size
+		solidPhantomLarge =	new G4Tubs("PhantomLarge",0,0.5*phantom_sizeX+phantom_thickness, 0.5*steak_thickness+phantom_thickness,0*deg,360*deg);     //its size
 		
-		solidPhantomInt =		new G4Tubs("PhantomInt",0,0.5*phantom_sizeX,0.5*phantom_sizeZ,0*deg,360*deg);     //its size
+		solidPhantomInt =		new G4Tubs("PhantomInt",0,0.5*phantom_sizeX,0.5*steak_thickness,0*deg,360*deg);     //its size
 		
-		solidSphereLarge= new G4Tubs("SphereLarge",0,0.5*sphere_diameter[whichSphere]+sphere_thickness, 0.5*phantom_sizeZ+phantom_thickness,0,360*deg);
+		solidSphereLarge= new G4Tubs("SphereLarge",0,0.5*sphere_diameter[whichSphere]+sphere_thickness, 0.5*steak_thickness+phantom_thickness,0,360*deg);
 		
-		solidSphereInt= new G4Tubs("SphereInt",0,0.5*sphere_diameter[whichSphere],0.5*phantom_sizeZ,0,360*deg);
+		solidSphereInt= new G4Tubs("SphereInt",0,0.5*sphere_diameter[whichSphere],0.5*steak_thickness,0,360*deg);
 		
 		phantomRot->rotateX(90*deg);
 	}

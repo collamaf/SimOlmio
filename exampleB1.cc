@@ -70,7 +70,7 @@ int main(int argc,char** argv)
 	// Detect interactive mode (if no arguments) and define UI session
 	G4UIExecutive* ui = 0;
 	
-	G4double x0Scan=0, CenterSphere=0, AbsorberDiam=0*mm,AbsorberThickness=1*mm, TBRvalue=1;
+	G4double x0Scan=0, CenterSphere=0, AbsorberDiam=0*mm, AbsorberThickness=1*mm, TBRvalue=1;
 	G4int FilterFlag=1, SourceChoice=1, IsotopeChoice=1, AbsorberMaterial=1, QuickFlagCommandLine=0, SphereSelect=6;
 	
 	G4String MacroName ="";
@@ -221,9 +221,9 @@ int main(int argc,char** argv)
 	//	FileNameCommonPart.append("_Fil" + std::to_string((G4int)FilterFlag));
 	
 	if (SphereSelect>0) {//phantom NEMA
-		FileNameCommonPart.append("_s" + std::to_string((G4int)SphereSelect));
+		FileNameCommonPart.append("_Nema_s" + std::to_string((G4int)SphereSelect));
 	}else{//bistecca
-		FileNameCommonPart.append("_s2D"+ std::to_string(-(G4int)SphereSelect));
+		FileNameCommonPart.append("_Steak_s"+ std::to_string(-(G4int)SphereSelect));
 	}
 	
 	
@@ -265,15 +265,14 @@ int main(int argc,char** argv)
 
 	// Construct the default run manager
 	//
-#define G4MULTITHREAD
-#ifdef G4MULTITHREAD
+#ifdef G4MULTITHREADED
 	  G4MTRunManager* runManager = new G4MTRunManager;
 //	runManager->SetNumberOfThreads( G4Threading::G4GetNumberOfCores() );
-	G4int numOfThreads=(Verbose>0||VisFlag)?1:8;
+	G4int numOfThreads=(Verbose>0||VisFlag)?1:G4Threading::G4GetNumberOfCores() -2;
 	runManager->SetNumberOfThreads( numOfThreads );
-	#else
+#else
 	G4RunManager* runManager = new G4RunManager;
-	#endif
+#endif
 	////	G4VSteppingVerbose::SetInstance(new SteppingVerbose); //to use my SteppingVerbose
 
 	// Set mandatory initialization classes
