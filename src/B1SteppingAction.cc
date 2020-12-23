@@ -47,12 +47,12 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1SteppingAction::B1SteppingAction(B1EventAction* eventAction, B1RunAction* runAction, G4double CollHoleDiam)
+B1SteppingAction::B1SteppingAction(B1EventAction* eventAction, B1RunAction* runAction, G4double DetConf)
 : G4UserSteppingAction(),
 fEventAction(eventAction),
 fScoringVolume(0),
 runStepAction(runAction),
-fCollHoleDiam(CollHoleDiam)
+fDetConf(DetConf)
 {}
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -83,7 +83,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	// ###################### ENTERING CMOS
 	
 	//	if((NextVol && ThisVol->GetName()=="DummyCMOS" && NextVol->GetName()=="CMOS")) { //what enters CMOS from front after 2018.05.29
-	if((NextVol && ThisVol->GetName()=="World" && NextVol->GetName()=="GammaCamera")) { //what enters CMOS from wherever - 2018.10.10 - "Good" one for Efficiencies
+	if((fDetConf==0) &&(NextVol && ThisVol->GetName()=="World" && NextVol->GetName()=="GammaCamera")) { //what enters CMOS from wherever - 2018.10.10 - "Good" one for Efficiencies
 		if (debug) G4cout<<"\nSTEPDEBUG\n Particella entrata in GammaCamera da dummy - fEventAction->GetEnteringParticle() ERA = "<<fEventAction->GetEnteringParticle();
 		
 //		fEventAction->SetEnteringParticle(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
@@ -187,7 +187,15 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 	// ###################### END ENTERING CMOS
 	// ###########################################################################
 //
-//#pragma mark What Enters Filter
+#pragma mark What Enters Detectors
+	
+	if((NextVol && ThisVol->GetName()=="World" && NextVol->GetName()=="Detector")) { //what enters CMOS from wherever - 2018.10.10 - "Good" one for Efficiencies
+		(runStepAction->GetRunDetCopyNB()).push_back(step->GetPostStepPoint()->GetTouchableHandle()->GetCopyNumber());
+		(runStepAction->GetRunDetEne()).push_back(step->GetPostStepPoint()->GetKineticEnergy());
+		(runStepAction->GetRunDetPart()).push_back(step->GetTrack()->GetDynamicParticle() ->GetPDGcode());
+	}
+	
+	
 //
 //	// ###########################################################################
 //	// ###################### ENTERING FILTER

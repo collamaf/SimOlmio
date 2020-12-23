@@ -114,6 +114,10 @@ public:
 	std::vector<G4double>& GetRunPixXpos() {return fRunPixXpos; }
 	std::vector<G4double>& GetRunPixYpos() {return fRunPixYpos; }
 	
+	std::vector<G4double>& GetRunDetCopyNB() {return fRunDetCopyNb; }
+	std::vector<G4double>& GetRunDetEne() {return fRunDetEne; }
+	std::vector<G4double>& GetRunDetPart() {return fRunDetPart; }
+
 	G4int GetEventNumber() {return nbEventInRun;}
 	
 	void SetMotherIsotope(G4double miso) {fMotherIsotope=miso;}
@@ -206,6 +210,10 @@ private:
 	std::vector<G4int> fRunExitProcess;
 	
 	std::vector<G4double> fRunEAbsComp;
+
+	std::vector<G4double> fRunDetCopyNb;
+	std::vector<G4double> fRunDetEne;
+	std::vector<G4double> fRunDetPart;
 
 	
 	G4String fFileName;

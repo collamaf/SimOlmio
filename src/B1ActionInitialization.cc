@@ -38,8 +38,8 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1ActionInitialization::B1ActionInitialization(G4double sphereDistY, G4double CenterSphere, G4double CollHoleDiam, G4int FilterFlag, G4double TBR/*, G4bool SrSourceFlag*/, G4int SphereSelect, G4int IsotopeChoice, G4String FileName)
-  : G4VUserActionInitialization(), fsphereDistY(sphereDistY), fCenterSphere(CenterSphere), fCollHoleDiam(CollHoleDiam), fFilterFlag(FilterFlag), fTBR(TBR), /*fSrSourceFlag(SrSourceFlag),*/ 	fSphereSelect(SphereSelect), fIsotopeChoice(IsotopeChoice), fFileName(FileName)
+B1ActionInitialization::B1ActionInitialization(G4double sphereDistY, G4double CenterSphere, G4double DetConf, G4int FilterFlag, G4double TBR/*, G4bool SrSourceFlag*/, G4int SphereSelect, G4int IsotopeChoice, G4String FileName)
+  : G4VUserActionInitialization(), fsphereDistY(sphereDistY), fCenterSphere(CenterSphere), fDetConf(DetConf), fFilterFlag(FilterFlag), fTBR(TBR), /*fSrSourceFlag(SrSourceFlag),*/ 	fSphereSelect(SphereSelect), fIsotopeChoice(IsotopeChoice), fFileName(FileName)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -68,7 +68,7 @@ void B1ActionInitialization::Build() const
   B1EventAction* eventAction = new B1EventAction(runAction);
   SetUserAction(eventAction);
 	
-  SetUserAction(new B1SteppingAction(eventAction, runAction, fCollHoleDiam));
+  SetUserAction(new B1SteppingAction(eventAction, runAction, fDetConf));
 	
 //	B1PrimaryGeneratorAction* primAction= new B1PrimaryGeneratorAction(eventAction, TRUE, fSrSourceFlag, TRUE, fTBR, fSrSourceFlag); // Y, Sr, PrintDist, TBR sorge
 	B1PrimaryGeneratorAction* primAction= new B1PrimaryGeneratorAction(eventAction,  fTBR, fIsotopeChoice);

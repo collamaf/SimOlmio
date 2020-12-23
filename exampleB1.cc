@@ -326,9 +326,9 @@ int main(int argc,char** argv)
 				UImanager->ApplyCommand("/gps/pos/halfz 30 cm");
 				UImanager->ApplyCommand("/gps/pos/confine Phantom");
 			} else { //spheres
-				UImanager->ApplyCommand("/gps/pos/halfx 2 cm");
-				UImanager->ApplyCommand("/gps/pos/halfy 2 cm");
-				UImanager->ApplyCommand("/gps/pos/halfz 2 cm");
+				UImanager->ApplyCommand("/gps/pos/halfx 8 cm");
+				UImanager->ApplyCommand("/gps/pos/halfy 8 cm");
+				UImanager->ApplyCommand("/gps/pos/halfz 8 cm");
 					UImanager->ApplyCommand("/gps/pos/confine Sphere");
 			}
 			UImanager->ApplyCommand("/gps/ene/type/Mono");

@@ -252,6 +252,11 @@ void B1RunAction::CreateHistogram()
 //	analysisManager->CreateNtupleDColumn(0,"SourceIsotope", fRunIsotopeGen); //21
 //	analysisManager->CreateNtupleIColumn(0,"Nev");							//22
 	analysisManager->CreateNtupleSColumn(0,"SourceReg");                           //17
+	
+	analysisManager->CreateNtupleDColumn(0,"DetCopyNB", fRunDetCopyNb); //20
+	analysisManager->CreateNtupleDColumn(0,"DetEne", fRunDetEne); //20
+	analysisManager->CreateNtupleDColumn(0,"DetPart", fRunDetPart); //20
+
 
 	analysisManager->CreateNtupleDColumn(1,"AllX");                           //0
 	analysisManager->CreateNtupleDColumn(1,"AllY");                           //1

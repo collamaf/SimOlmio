@@ -52,7 +52,7 @@ public:
 protected:
 	G4double fsphereDistY;
 	G4double fCenterSphere;
-	G4double fCollHoleDiam;
+	G4double fDetConf;
 	G4int fFilterFlag;
 	G4double fTBR;
 //	G4bool fSrSourceFlag;

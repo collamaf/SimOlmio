@@ -401,16 +401,16 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	if (fDetConf!=0) {
 
 
-	G4Tubs* solidDet1 =	new G4Tubs("Detector1",0,detector_sizeR, 0.5*detector_sizeZ,0*deg,360*deg);     //its size
-	G4LogicalVolume* logicDet1 =
-	new G4LogicalVolume(solidDet1,          //its solid
+	G4Tubs* solidDet =	new G4Tubs("Detector",0,detector_sizeR, 0.5*detector_sizeZ,0*deg,360*deg);     //its size
+	G4LogicalVolume* logicDet =
+	new G4LogicalVolume(solidDet,          //its solid
 											world_mat,           //its material
-											"Detector1");            //its name
+											"Detector");            //its name
 	
 	G4VPhysicalVolume* physDet1 =
 	new G4PVPlacement(detRot1,                     //no rotation
 										posDet1,       //at (0,0,0)
-										logicDet1,            //its logical volume
+										logicDet,            //its logical volume
 										"Detector",               //its name
 										logicWorld,                     //its mother  volume
 										false,                 //no boolean operation
@@ -420,7 +420,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		G4VPhysicalVolume* physDet2 =
 		new G4PVPlacement(detRot2,                     //no rotation
 											posDet2,       //at (0,0,0)
-											logicDet1,            //its logical volume
+											logicDet,            //its logical volume
 											"Detector",               //its name
 											logicWorld,                     //its mother  volume
 											false,                 //no boolean operation
@@ -430,7 +430,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 		G4VPhysicalVolume* physDet3 =
 		new G4PVPlacement(detRot3,                     //no rotation
 											posDet3,       //at (0,0,0)
-											logicDet1,            //its logical volume
+											logicDet,            //its logical volume
 											"Detector",               //its name
 											logicWorld,                     //its mother  volume
 											false,                 //no boolean operation

@@ -142,8 +142,10 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	(fRunAction->GetRunPreFilterEn()).clear();
 	(fRunAction->GetRunPreFilterPart()).clear();
 	
+	(fRunAction->GetRunDetCopyNB()).clear();
+	(fRunAction->GetRunDetEne()).clear();
+	(fRunAction->GetRunDetPart()).clear();
 
-	
 	
 	//	}
 	fno=0;

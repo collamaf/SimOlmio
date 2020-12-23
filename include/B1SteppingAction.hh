@@ -58,7 +58,7 @@ private:
 	B1EventAction*  fEventAction;
 	G4LogicalVolume* fScoringVolume;
 	B1RunAction* runStepAction;
-	G4double fCollHoleDiam;
+	G4double fDetConf;
 	
 	std::vector<double> EntEnStep;
 	
