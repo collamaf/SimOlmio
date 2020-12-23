@@ -209,7 +209,7 @@ int main(int argc,char** argv)
 	G4String MaterialiAssorbitore[3]= {"Cu","Al","ABS"};
 	
 //	G4String FileNamePrim="Primaries";
-	G4String OutFileName="OLMIO";
+	G4String OutFileName="NEMA";
 	G4String FileNameCommonPart;
 //
 //	FileNameCommonPart.append("_X"+ std::to_string((G4int)sphereDistY));
@@ -226,14 +226,19 @@ int main(int argc,char** argv)
 		FileNameCommonPart.append("_Steak_s"+ std::to_string(-(G4int)SphereSelect));
 	}
 	
-	
+	if (sphereDistY!=0) FileNameCommonPart.append("_Dist"+ std::to_string((G4int)sphereDistY));
+	if (DetConf!=0) FileNameCommonPart.append("_Det"+ std::to_string((G4int)DetConf));
+
 	if (SourceChoice==2) {//phantom
 		FileNameCommonPart.append("_F");
 	}else{//sfere
 		FileNameCommonPart.append("_S");
 	}
 		//
+	if (IsotopeChoice==1) FileNameCommonPart.append("_Ho");
 	if (IsotopeChoice==2) FileNameCommonPart.append("_Tc");
+	if (IsotopeChoice==3) FileNameCommonPart.append("_Cu");
+	if (IsotopeChoice==4) FileNameCommonPart.append("_I");
 //	if (SphereSelect==2) FileNameCommonPart.append("_ExtSr");
 //	if (SphereSelect==3) FileNameCommonPart.append("_ExtY_TBR"+ std::to_string((G4int)TBRvalue));
 //	if (SphereSelect==4) FileNameCommonPart.append("_PCo60");
