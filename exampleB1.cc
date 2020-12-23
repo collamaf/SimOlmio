@@ -70,7 +70,7 @@ int main(int argc,char** argv)
 	// Detect interactive mode (if no arguments) and define UI session
 	G4UIExecutive* ui = 0;
 	
-	G4double sphereDistY=0, CenterSphere=0, AbsorberDiam=0*mm, AbsorberThickness=1*mm, TBRvalue=1;
+	G4double sphereDistY=0, CenterSphere=0, DetConf=0*mm, AbsorberThickness=1*mm, TBRvalue=1;
 	G4int FilterFlag=1, SourceChoice=1, IsotopeChoice=1, AbsorberMaterial=1, QuickFlagCommandLine=0, SphereSelect=6;
 	
 	G4String MacroName ="";
@@ -117,9 +117,9 @@ int main(int argc,char** argv)
 		{
 			G4String option(argv[i]);
 			G4cout<<"option: "<<i<<" "<<option<<G4endl;
-			if(option.compare("-AbsD")==0)
+			if(option.compare("-DetConf")==0)
 			{
-				AbsorberDiam=strtod (argv[++i], NULL);;
+				DetConf=strtod (argv[++i], NULL);;
 			}
 			else if(option.compare("-AbsT")==0)
 			{
@@ -215,7 +215,7 @@ int main(int argc,char** argv)
 //	FileNameCommonPart.append("_X"+ std::to_string((G4int)sphereDistY));
 //	FileNameCommonPart.append("_Z"+ std::to_string((G4int)(100*CenterSphere)));
 //
-//	if (AbsorberDiam>=0) FileNameCommonPart.append("_AbsDz" + std::to_string((G4int)(1000*AbsorberThickness))+"_AbsHole" + std::to_string((G4int)(100*AbsorberDiam)) +"_AbsMat" + MaterialiAssorbitore[AbsorberMaterial-1]);
+//	if (DetConf>=0) FileNameCommonPart.append("_AbsDz" + std::to_string((G4int)(1000*AbsorberThickness))+"_AbsHole" + std::to_string((G4int)(100*DetConf)) +"_AbsMat" + MaterialiAssorbitore[AbsorberMaterial-1]);
 //	else FileNameCommonPart.append("_NoAbs");
 //
 	//	FileNameCommonPart.append("_Fil" + std::to_string((G4int)FilterFlag));
@@ -278,7 +278,7 @@ int main(int argc,char** argv)
 	// Set mandatory initialization classes
 	// Detector construction
 
-	runManager->SetUserInitialization(new B1DetectorConstruction(sphereDistY, CenterSphere, AbsorberDiam, AbsorberThickness, AbsorberMaterial, FilterFlag, SphereSelect, IsotopeChoice, QuickFlag, PixelThickness)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
+	runManager->SetUserInitialization(new B1DetectorConstruction(sphereDistY, CenterSphere, DetConf, AbsorberThickness, AbsorberMaterial, FilterFlag, SphereSelect, IsotopeChoice, QuickFlag, PixelThickness)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
 	
 	// Physics list
 	//G4VModularPhysicsList* physicsList = new QBBC;
@@ -292,7 +292,7 @@ int main(int argc,char** argv)
 	
 	// User action initialization
 	//	runManager->SetUserInitialization(new B1ActionInitialization(sphereDistY, CenterSphere, CollHoleDiam, FilterFlag, primFile, TBRvalue,SphereSelect, SphereSelect));
-	runManager->SetUserInitialization(new B1ActionInitialization(sphereDistY, CenterSphere, AbsorberDiam, FilterFlag, TBRvalue, SphereSelect, IsotopeChoice, OutFileName));
+	runManager->SetUserInitialization(new B1ActionInitialization(sphereDistY, CenterSphere, DetConf, FilterFlag, TBRvalue, SphereSelect, IsotopeChoice, OutFileName));
 	
 	// Initialize visualization
 	//

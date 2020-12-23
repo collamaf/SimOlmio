@@ -51,9 +51,9 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1DetectorConstruction::B1DetectorConstruction(G4double sphereDistY, G4double CenterSphere, G4double CollHoleDiam, G4double CollThickness, G4int CollMaterial, G4int FilterFlag, G4double SphereSelect, G4int IsotopeChoice, G4bool QuickFlag, G4double PxThickness)
+B1DetectorConstruction::B1DetectorConstruction(G4double sphereDistY, G4double CenterSphere, G4double DetConf, G4double CollThickness, G4int CollMaterial, G4int FilterFlag, G4double SphereSelect, G4int IsotopeChoice, G4bool QuickFlag, G4double PxThickness)
 : G4VUserDetectorConstruction(),
-fScoringVolume(0), fsphereDistY(sphereDistY), fCenterSphere(CenterSphere), fCollHoleDiam(CollHoleDiam), fCollThickness(CollThickness), fCollMaterial(CollMaterial), fFilterFlag(FilterFlag), fSphereSelect(SphereSelect), fIsotopeChoice(IsotopeChoice), fQuickFlag(QuickFlag), fPixelThickness(PxThickness)
+fScoringVolume(0), fsphereDistY(sphereDistY), fCenterSphere(CenterSphere), fDetConf(DetConf), fCollThickness(CollThickness), fCollMaterial(CollMaterial), fFilterFlag(FilterFlag), fSphereSelect(SphereSelect), fIsotopeChoice(IsotopeChoice), fQuickFlag(QuickFlag), fPixelThickness(PxThickness)
 { }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -158,6 +158,8 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double phantom_sizeZ  = 18*cm;
 	G4double steak_thickness= 3*cm;
 	
+	if (fDetConf!=0) phantom_sizeX=phantom_sizeY;
+	
 	G4double phantom_thickness = 2.5*mm;
 	G4double sphere_thickness = 5*mm;
 	
@@ -166,8 +168,14 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double sphere_diameter[6]= {
 		10*mm, 13*mm, 17*mm, 22*mm, 28*mm, 37*mm
 	};
+	
+	G4double detector_sizeR = 13*mm;
+	G4double detector_sizeZ  = 3*mm;
+	
+	
 	G4double distSphereSurface=70*mm;
 	G4double distGammaCamera=25*cm;
+	G4double detLinearDistance=7*cm;
 	
 	G4double sphereCenterZ=0.5*phantom_sizeZ-distSphereSurface-0.5*sphere_diameter[whichSphere];
 	if (fCenterSphere==0) sphereCenterZ=0*cm; //sfera centrata
@@ -181,7 +189,44 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double gammaCamera_sizeXZ=100*cm;
 	G4double gammaCamera_sizeY=10*um;
 
+	G4double safeDistance=5*mm;
+	G4double detAngle=detLinearDistance/(phantom_sizeY*0.5);
 	
+	G4double offsetAngle=0*rad;
+	if (fDetConf==2){
+	offsetAngle=detAngle;
+	}
+	else if (fDetConf==3){
+		offsetAngle=-detAngle;
+	}
+		
+	G4double detPosAngle[3]={offsetAngle+0*rad, offsetAngle+detAngle*rad, offsetAngle-detAngle*rad};
+
+	G4ThreeVector posDet1=G4ThreeVector(phantom_sizeY*0.5*sin(detPosAngle[0]),
+																			phantom_sizeY*0.5*cos(detPosAngle[0])+detector_sizeZ*0.5+safeDistance,
+																			sphereCenterZ);
+	
+	G4ThreeVector posDet2=G4ThreeVector(phantom_sizeY*0.5*sin(detPosAngle[1]),
+																			phantom_sizeY*0.5*cos(detPosAngle[1])+detector_sizeZ*0.5+safeDistance,
+																			sphereCenterZ);
+
+	G4ThreeVector posDet3=G4ThreeVector(phantom_sizeY*0.5*sin(detPosAngle[2]),
+																			phantom_sizeY*0.5*cos(detPosAngle[2])+detector_sizeZ*0.5+safeDistance,
+																			sphereCenterZ);
+	
+	
+	G4RotationMatrix* detRot1= new G4RotationMatrix();
+	detRot1->rotateX(90*deg);
+	detRot1->rotateY(-detPosAngle[0]);
+
+	
+	G4RotationMatrix* detRot2= new G4RotationMatrix();
+	detRot2->rotateX(90*deg);
+	detRot2->rotateY(-detPosAngle[1]);
+
+	G4RotationMatrix* detRot3= new G4RotationMatrix();
+	detRot3->rotateX(90*deg);
+	detRot3->rotateY(-detPosAngle[2]);
 	
 	//###################################################################
 	//###################################################
@@ -353,8 +398,46 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 										checkOverlaps);        //overlaps checking
 
 	
+	if (fDetConf!=0) {
+
+
+	G4Tubs* solidDet1 =	new G4Tubs("Detector1",0,detector_sizeR, 0.5*detector_sizeZ,0*deg,360*deg);     //its size
+	G4LogicalVolume* logicDet1 =
+	new G4LogicalVolume(solidDet1,          //its solid
+											world_mat,           //its material
+											"Detector1");            //its name
 	
-	
+	G4VPhysicalVolume* physDet1 =
+	new G4PVPlacement(detRot1,                     //no rotation
+										posDet1,       //at (0,0,0)
+										logicDet1,            //its logical volume
+										"Detector1",               //its name
+										logicWorld,                     //its mother  volume
+										false,                 //no boolean operation
+										0,                     //copy number
+										checkOverlaps);        //overlaps checking
+		
+		G4VPhysicalVolume* physDet2 =
+		new G4PVPlacement(detRot2,                     //no rotation
+											posDet2,       //at (0,0,0)
+											logicDet1,            //its logical volume
+											"Detector2",               //its name
+											logicWorld,                     //its mother  volume
+											false,                 //no boolean operation
+											0,                     //copy number
+											checkOverlaps);        //overlaps checking
+		
+		G4VPhysicalVolume* physDet3 =
+		new G4PVPlacement(detRot3,                     //no rotation
+											posDet3,       //at (0,0,0)
+											logicDet1,            //its logical volume
+											"Detector3",               //its name
+											logicWorld,                     //its mother  volume
+											false,                 //no boolean operation
+											0,                     //copy number
+											checkOverlaps);        //overlaps checking
+		
+	}
 	// Set scoring volume
 	//Pixelated CMOS
 //	fScoringVolume = logicPhantom;

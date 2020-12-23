@@ -54,7 +54,7 @@ protected:
 	G4LogicalVolume*  fScoringVolume;
 	G4double fsphereDistY;
 	G4double fCenterSphere;
-	G4double fCollHoleDiam;
+	G4double fDetConf;
 	G4double fCollThickness;
 	G4int fCollMaterial;
 	G4int fFilterFlag;
