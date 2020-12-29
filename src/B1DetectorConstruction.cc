@@ -158,8 +158,9 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 	G4double phantom_sizeZ  = 18*cm;
 	G4double steak_thickness= 3*cm;
 	
-	if (fDetConf!=0) phantom_sizeX=phantom_sizeY;
-	
+//	if (fDetConf!=0) phantom_sizeX=phantom_sizeY;
+	if (fDetConf!=0) phantom_sizeY=phantom_sizeX;
+
 	G4double phantom_thickness = 2.5*mm;
 	G4double sphere_thickness = 5*mm;
 	
