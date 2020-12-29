@@ -118,6 +118,9 @@ A root file named CMOSmc_{XX}.root is created, reporting the several parameters 
 - Possibility to add detectors like IFO WIDMApp studies: if DetConf!=0 3 detectors are placed, and 3 configs can be chosen via DetConf1, 2 or 3. For now score only particles entering these hollow detectors.
 - Add 64Cu and 131I sources
 
+2020.12.29 by collamaf
+- Reorganization of geometry, now with 2 different DetConst, one for NEMA and one for Steak (previous selection mechanism kept)
+- In Steak Geometry now changed whole orientation (towards Z), renamed volumes and added triangle inner vessel if -Sphere <-6 (for now triangles dimensions are fixed)
 
 ## TO DO's
 

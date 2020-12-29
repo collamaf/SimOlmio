@@ -29,6 +29,8 @@
 /// \brief Main program of the B1 example
 
 #include "B1DetectorConstruction.hh"
+#include "B1DetectorConstructionNEMA.hh"
+#include "B1DetectorConstructionSTEAK.hh"
 #include "B1ActionInitialization.hh"
 
 #ifdef G4MULTITHREADED
@@ -282,9 +284,12 @@ int main(int argc,char** argv)
 
 	// Set mandatory initialization classes
 	// Detector construction
-
-	runManager->SetUserInitialization(new B1DetectorConstruction(sphereDistY, CenterSphere, DetConf, AbsorberThickness, AbsorberMaterial, FilterFlag, SphereSelect, IsotopeChoice, QuickFlag, PixelThickness)); //DetectorConstruction needs to know if it is a SrSource to place the right geometry
-	
+	if (SphereSelect>0) { // geometria NEMA-like
+	runManager->SetUserInitialization(new B1DetectorConstructionNEMA(sphereDistY, CenterSphere, DetConf, AbsorberThickness, AbsorberMaterial, FilterFlag, SphereSelect, IsotopeChoice, QuickFlag, PixelThickness));
+	} else { // geometria bistecca-like
+		runManager->SetUserInitialization(new B1DetectorConstructionSTEAK(sphereDistY, CenterSphere, DetConf, AbsorberThickness, AbsorberMaterial, FilterFlag, SphereSelect, IsotopeChoice, QuickFlag, PixelThickness));
+	}
+		
 	// Physics list
 	//G4VModularPhysicsList* physicsList = new QBBC;
 	//physicsList->SetVerboseLevel(1);
