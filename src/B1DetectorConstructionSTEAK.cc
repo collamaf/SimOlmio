@@ -120,8 +120,8 @@ G4VPhysicalVolume* B1DetectorConstructionSTEAK::Construct()
 	G4double vesselExt_sizeY=25*cm;
 	G4double vesselExt_sizeZ=3*cm;
 
-	G4double vesselExt_thickness=1000*um;
-	G4double vesselInt_thickness=500*um;
+	G4double vesselExt_thickness=10*1000*um;
+	G4double vesselInt_thickness=10*500*um;
 
 	G4double triangle_vertices=3*cm;
 	
@@ -194,7 +194,7 @@ G4VPhysicalVolume* B1DetectorConstructionSTEAK::Construct()
 	// Phantom
 	//##########################
 	
-
+	G4double booleanDistance=0*um;
 	
 	G4VSolid* solidOuterVesselLarge;
 	G4VSolid* solidOuterVesselInt;
@@ -214,7 +214,7 @@ G4VPhysicalVolume* B1DetectorConstructionSTEAK::Construct()
 	solidOuterVesselInt=new G4Box("OuterVesselInt",
 															(vesselExt_sizeX)*0.5,
 															(vesselExt_sizeY)*0.5,
-															vesselExt_sizeZ*0.5
+															vesselExt_sizeZ*0.5+booleanDistance
 															);
 	
 	
@@ -231,33 +231,47 @@ G4VPhysicalVolume* B1DetectorConstructionSTEAK::Construct()
 	verticiInt.push_back({triangle_vertices,-triangle_vertices});
 	verticiInt.push_back({-triangle_vertices,-triangle_vertices});
 
-	std::vector<G4ExtrudedSolid::ZSection> piani;
-	piani.push_back(G4ExtrudedSolid::ZSection(-0.5*vesselExt_sizeZ,G4TwoVector(0,0),1));
-	piani.push_back(G4ExtrudedSolid::ZSection(0.5*vesselExt_sizeZ,G4TwoVector(0,0),1));
+	std::vector<G4ExtrudedSolid::ZSection> pianiExt;
+	pianiExt.push_back(G4ExtrudedSolid::ZSection(-0.5*vesselExt_sizeZ-booleanDistance,G4TwoVector(0,0),1));
+	pianiExt.push_back(G4ExtrudedSolid::ZSection(0.5*vesselExt_sizeZ+booleanDistance,G4TwoVector(0,0),1));
 
+	
+	std::vector<G4ExtrudedSolid::ZSection> pianiInt;
+	pianiInt.push_back(G4ExtrudedSolid::ZSection(-0.5*vesselExt_sizeZ-booleanDistance,G4TwoVector(0,0),1));
+	pianiInt.push_back(G4ExtrudedSolid::ZSection(0.5*vesselExt_sizeZ+booleanDistance,G4TwoVector(0,0),1));
+	
+	
 	if (whichSphere>=6) {
 	solidInnerVesselLarge= new G4ExtrudedSolid("InnerVesselExt",
 																						 verticiExt,
-																						 piani
+																						 pianiExt
 																						 );
 
 	solidInnerVesselInt= new G4ExtrudedSolid("InnerVesselInt",
 																						 verticiInt,
-																						 piani
+																						 pianiInt
 																						 );
 	} else  {
-	solidInnerVesselLarge= new G4Tubs("InnerVesselExt",0,0.5*sphere_diameter[whichSphere]+sphere_thickness, 0.5*steak_thickness,0,360*deg);
+	solidInnerVesselLarge= new G4Tubs("InnerVesselExt",0,
+																		0.5*sphere_diameter[whichSphere]+sphere_thickness,
+																		0.5*steak_thickness,
+																		0,360*deg);
 
-	solidInnerVesselInt= new G4Tubs("InnerVesselInt",0,0.5*sphere_diameter[whichSphere],0.5*steak_thickness,0,360*deg);
+	solidInnerVesselInt= new G4Tubs("InnerVesselInt",0,
+																	0.5*sphere_diameter[whichSphere],
+																	0.5*steak_thickness+booleanDistance,
+																	0,360*deg);
 	}
 	
 	G4SubtractionSolid* solidOuterVesselShell=new G4SubtractionSolid("OuterVesselLarge-OuterVesselInt", solidOuterVesselLarge, solidOuterVesselInt);
+
 
 	
 	G4SubtractionSolid* solidInnerVesselShell=new G4SubtractionSolid("InnerVesselExt-InnerVesselInt", solidInnerVesselLarge, solidInnerVesselInt);
 	
 	G4SubtractionSolid* solidOuterVessel=new G4SubtractionSolid("OuterVesselInt-InnerVesselExt", solidOuterVesselInt, solidInnerVesselLarge);
-
+	
+//	G4SubtractionSolid* solidOuterVessel=new G4SubtractionSolid("OuterVesselInt-InnerVesselExt", solidOuterVesselInt, solidInnerVesselShell);
 
 	G4LogicalVolume* logicOuterVesselShell =
 	new G4LogicalVolume(solidOuterVesselShell,          //its solid
@@ -273,28 +287,28 @@ G4VPhysicalVolume* B1DetectorConstructionSTEAK::Construct()
 										0,                     //copy number
 										checkOverlaps);        //overlaps checking
 	
-	
-	
+
+
 	G4LogicalVolume* logicOuterVessel =
 	new G4LogicalVolume(solidOuterVessel,          //its solid
 											PhantomInt_mat,           //its material
 											"Phantom");            //its name
-	
+
 	new G4PVPlacement(0,                     //no rotation
 										G4ThreeVector(),       //at (0,0,0)
-										logicOuterVesselShell,            //its logical volume
+										logicOuterVessel,            //its logical volume
 										"Phantom",               //its name
 										logicWorld,                     //its mother  volume
 										false,                 //no boolean operation
 										0,                     //copy number
 										checkOverlaps);        //overlaps checking
-	
-	
+
+
 	G4LogicalVolume* logicInnerVesselShell =
 	new G4LogicalVolume(solidInnerVesselShell,          //its solid
 											SphereShell_mat,           //its material
 											"SphereShell");            //its name
-	
+
 	new G4PVPlacement(0,                     //no rotation
 										G4ThreeVector(),       //at (0,0,0)
 										logicInnerVesselShell,            //its logical volume
@@ -303,12 +317,12 @@ G4VPhysicalVolume* B1DetectorConstructionSTEAK::Construct()
 										false,                 //no boolean operation
 										0,                     //copy number
 										checkOverlaps);        //overlaps checking
-	
+
 	G4LogicalVolume* logiInnerVessel =
 	new G4LogicalVolume(solidInnerVesselInt,          //its solid
 											SphereInt_mat,           //its material
 											"Sphere");            //its name
-	
+
 	new G4PVPlacement(0,                     //no rotation
 										G4ThreeVector(),       //at (0,0,0)
 										logiInnerVessel,            //its logical volume
@@ -317,17 +331,17 @@ G4VPhysicalVolume* B1DetectorConstructionSTEAK::Construct()
 										false,                 //no boolean operation
 										0,                     //copy number
 										checkOverlaps);        //overlaps checking
-	
-	
+
+
 	G4Box* solidGammaCamera =
 	new G4Box("GammmaCamera",                       //its name
 						0.5*gammaCamera_sizeXY, 0.5*gammaCamera_sizeXY, 0.5*gammaCamera_sizeZ);     //its size
-	
+
 	G4LogicalVolume* logicGammaCamera =
 	new G4LogicalVolume(solidGammaCamera,          //its solid
 											world_mat,           //its material
 											"GammaCamera");            //its name
-	
+
 	G4VPhysicalVolume* physGammaCamera =
 	new G4PVPlacement(0,                     //no rotation
 										gammaCameraPos,       //at (0,0,0)

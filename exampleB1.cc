@@ -225,15 +225,18 @@ int main(int argc,char** argv)
 	if (SphereSelect>0) {//phantom NEMA
 		FileNameCommonPart.append("_Nema_s" + std::to_string((G4int)SphereSelect));
 	}else{//bistecca
-		FileNameCommonPart.append("_Steak_s"+ std::to_string(-(G4int)SphereSelect));
+		if (SphereSelect<-6)
+		FileNameCommonPart.append("_Steak_Triangle");
+		else 		FileNameCommonPart.append("_Steak_s"+ std::to_string(-(G4int)SphereSelect));
+
 	}
 	
 	if (sphereDistY!=0) FileNameCommonPart.append("_Dist"+ std::to_string((G4int)sphereDistY));
 	if (DetConf!=0) FileNameCommonPart.append("_Det"+ std::to_string((G4int)DetConf));
 
-	if (SourceChoice==2) {//phantom
+	if (SourceChoice==2) {//fondo
 		FileNameCommonPart.append("_F");
-	}else{//sfere
+	}else{//segnale
 		FileNameCommonPart.append("_S");
 	}
 		//
@@ -241,22 +244,8 @@ int main(int argc,char** argv)
 	if (IsotopeChoice==2) FileNameCommonPart.append("_Tc");
 	if (IsotopeChoice==3) FileNameCommonPart.append("_I");
 	if (IsotopeChoice==4) FileNameCommonPart.append("_Cu");
-//	if (SphereSelect==2) FileNameCommonPart.append("_ExtSr");
-//	if (SphereSelect==3) FileNameCommonPart.append("_ExtY_TBR"+ std::to_string((G4int)TBRvalue));
-//	if (SphereSelect==4) FileNameCommonPart.append("_PCo60");
-//	if (SphereSelect==5) FileNameCommonPart.append("_PNa22");
-//	if (SphereSelect==6) FileNameCommonPart.append("_PBa133");
-//	if (SphereSelect==7) FileNameCommonPart.append("_PCs137");
-//	if (SphereSelect==8) FileNameCommonPart.append("_FlatEle");
-//	if (SphereSelect==9) FileNameCommonPart.append("_FlatGamma");
-//	if (SphereSelect==10) FileNameCommonPart.append("_PNa22nude");
-//
-//	if (IsotopeChoice==1) FileNameCommonPart.append("_011");
-//	if (IsotopeChoice==2) FileNameCommonPart.append("_115");
-//	if (IsotopeChoice==3) FileNameCommonPart.append("_60035");
-//
-//		FileNameCommonPart.append("_PxT" + std::to_string((G4int)(100*PixelThickness)));
-//
+
+
 	if (VisFlag) FileNameCommonPart.append("TEST"); //if it was a TEST run under vis
 	if (QuickFlagCommandLine) FileNameCommonPart.append("_Quick"); //if it was a TEST run under vis
 
@@ -329,18 +318,41 @@ int main(int argc,char** argv)
 			UImanager->ApplyCommand("/gps/pos/type Volume");
 			UImanager->ApplyCommand("/gps/pos/centre 0. 0. 0. cm");
 			UImanager->ApplyCommand("/gps/pos/shape Para");
-
-			if (SourceChoice==2) { //phantom
-				UImanager->ApplyCommand("/gps/pos/halfx 30 cm");
-				UImanager->ApplyCommand("/gps/pos/halfy 30 cm");
-				UImanager->ApplyCommand("/gps/pos/halfz 30 cm");
-				UImanager->ApplyCommand("/gps/pos/confine Phantom");
-			} else { //spheres
-				UImanager->ApplyCommand("/gps/pos/halfx 4 cm");
-				UImanager->ApplyCommand("/gps/pos/halfy 14 cm");
-				UImanager->ApplyCommand("/gps/pos/halfz 2 cm");
-					UImanager->ApplyCommand("/gps/pos/confine Sphere");
+			
+			if (SphereSelect>0) { //NEMA like
+				if (SourceChoice==2) { //fondo
+					UImanager->ApplyCommand("/gps/pos/halfx 30 cm");
+					UImanager->ApplyCommand("/gps/pos/halfy 30 cm");
+					UImanager->ApplyCommand("/gps/pos/halfz 30 cm");
+					UImanager->ApplyCommand("/gps/pos/confine Phantom");
+				} else { //segnale
+					UImanager->ApplyCommand("/gps/pos/halfx 4 cm");
+					UImanager->ApplyCommand("/gps/pos/halfy 14 cm");
+					UImanager->ApplyCommand("/gps/pos/halfz 2 cm");
+						UImanager->ApplyCommand("/gps/pos/confine Sphere");
+				}
+				
 			}
+			
+			else { //STEAK like
+				
+				if (SourceChoice==2) { //fondo
+					UImanager->ApplyCommand("/gps/pos/halfx 15 cm");
+					UImanager->ApplyCommand("/gps/pos/halfy 15 cm");
+					UImanager->ApplyCommand("/gps/pos/halfz 2 cm");
+					UImanager->ApplyCommand("/gps/pos/confine Phantom");
+				} else { //segnale
+					UImanager->ApplyCommand("/gps/pos/halfx 4 cm");
+					UImanager->ApplyCommand("/gps/pos/halfy 7 cm");
+					UImanager->ApplyCommand("/gps/pos/halfz 2 cm");
+						UImanager->ApplyCommand("/gps/pos/confine Sphere");
+				}
+				
+				
+				
+			}
+
+			
 			UImanager->ApplyCommand("/gps/ene/type/Mono");
 			UImanager->ApplyCommand("/gps/ene/mono 0 MeV");
 			UImanager->ApplyCommand("/tracking/verbose " + std::to_string(Verbose));
