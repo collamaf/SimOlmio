@@ -121,8 +121,8 @@ G4VPhysicalVolume* B1DetectorConstructionSTEAK::Construct()
 	G4double vesselExt_sizeY=25*cm;
 	G4double vesselExt_sizeZ=3*cm;
 
-	G4double vesselExt_thickness=10*1000*um;
-	G4double vesselInt_thickness=10*500*um;
+	G4double vesselExt_thickness=1000*um;
+	G4double vesselInt_thickness=500*um;
 
 	G4double triangle_vertices=3*cm;
 	
