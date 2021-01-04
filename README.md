@@ -125,7 +125,7 @@ A root file named CMOSmc_{XX}.root is created, reporting the several parameters 
 2021.01.04 by collamaf
 - Add PTER and deposited energy scoring for detectors in WIDMApp-like case
 - Add real collimator geometry for STEAK case
-- Add condition on steppingAction to differentiate case (w/ w/o detectors) optimizing time and file size
+- Add condition on steppingAction to differentiate case (w/ w/o detectors) optimizing time and file size.
 
 ## TO DO's
 
