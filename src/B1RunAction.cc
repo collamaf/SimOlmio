@@ -257,6 +257,10 @@ void B1RunAction::CreateHistogram()
 	analysisManager->CreateNtupleDColumn(0,"DetEne", fRunDetEne); //20
 	analysisManager->CreateNtupleDColumn(0,"DetPart", fRunDetPart); //20
 
+	analysisManager->CreateNtupleDColumn(0,"Eabs0");                           //0
+	analysisManager->CreateNtupleDColumn(0,"Eabs1");                           //0
+	analysisManager->CreateNtupleDColumn(0,"Eabs2");                           //0
+
 
 	analysisManager->CreateNtupleDColumn(1,"AllX");                           //0
 	analysisManager->CreateNtupleDColumn(1,"AllY");                           //1

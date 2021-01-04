@@ -122,6 +122,11 @@ G4VPhysicalVolume* B1DetectorConstructionNEMA::Construct()
  PMMA -> AddElement(elO, 2);
  PMMA -> AddElement(elH, 8);
 	
+	G4double PTerphenyldensity = 1.23*g/cm3;
+	G4Material* PTerphenyl= new G4Material (name="PTerphenyl", PTerphenyldensity, ncomponents=2);
+	PTerphenyl->AddElement (elC, natoms=18);
+	PTerphenyl->AddElement (elH, natoms=14);
+	
 
 	
 	//###################################################################
@@ -169,6 +174,7 @@ G4VPhysicalVolume* B1DetectorConstructionNEMA::Construct()
 		10*mm, 13*mm, 17*mm, 22*mm, 28*mm, 37*mm
 	};
 	
+	G4double detector_sizeXY = 15*mm; //15mm ogni lato del parallelepipedo
 	G4double detector_sizeR = 13*mm;
 	G4double detector_sizeZ  = 3*mm;
 	
@@ -390,10 +396,13 @@ G4VPhysicalVolume* B1DetectorConstructionNEMA::Construct()
 	if (fDetConf!=0) {
 
 
-	G4Tubs* solidDet =	new G4Tubs("Detector",0,detector_sizeR, 0.5*detector_sizeZ,0*deg,360*deg);     //its size
+//		G4Tubs* solidDet =	new G4Tubs("Detector",0,detector_sizeR, 0.5*detector_sizeZ,0*deg,360*deg);     //its size
+		G4Box* solidDet =	new G4Box("Detector",
+																0.5*detector_sizeXY,0.5*detector_sizeXY,
+																0.5*detector_sizeZ);     //its size
 	G4LogicalVolume* logicDet =
 	new G4LogicalVolume(solidDet,          //its solid
-											world_mat,           //its material
+											PTerphenyl,           //its material
 											"Detector");            //its name
 	
 
@@ -423,11 +432,13 @@ G4VPhysicalVolume* B1DetectorConstructionNEMA::Construct()
 											false,                 //no boolean operation
 											2,                     //copy number
 											checkOverlaps);        //overlaps checking
-		
+
+
+		fScoringVolume = logicDet;
+
 	}
 	// Set scoring volume
 	//Pixelated CMOS
-//	fScoringVolume = logicPhantom;
 	return physWorld;
 }
 

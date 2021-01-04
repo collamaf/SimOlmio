@@ -50,6 +50,7 @@ public:
 	virtual void EndOfEventAction(const G4Event* event);
 	
 	void AddEdep(G4double edep) { fEdep += edep; }
+	void AddEdep(G4double edep, G4int cpnb) { fEdepCpn[cpnb] += edep;	}
 	void AddEdkin(G4double edkin) { fEdkin += edkin; }
 	void AddNo(G4int no) { fno += no; }
 	
@@ -111,6 +112,7 @@ public:
 private:
 	B1RunAction* fRunAction;
 	G4double fEdep;
+	G4double fEdepCpn[3];
 	G4double fEdkin;
 	// G4double xstop;
 	// G4double ystop;

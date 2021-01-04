@@ -122,6 +122,9 @@ A root file named CMOSmc_{XX}.root is created, reporting the several parameters 
 - Reorganization of geometry, now with 2 different DetConst, one for NEMA and one for Steak (previous selection mechanism kept)
 - In Steak Geometry now changed whole orientation (towards Z), renamed volumes and added triangle inner vessel if -Sphere <-6 (for now triangles dimensions are fixed).
 
+2021.01.04 by collamaf
+- Add PTER and deposited energy scoring for detectors in WIDMApp-like case
+
 ## TO DO's
 
 
