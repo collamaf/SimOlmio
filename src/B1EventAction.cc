@@ -39,7 +39,7 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-B1EventAction::B1EventAction(B1RunAction* runAction)
+B1EventAction::B1EventAction(B1RunAction* runAction, G4double DetConf)
 : G4UserEventAction(),
 fRunAction(runAction),
 fEdep(0.),
@@ -57,7 +57,8 @@ fNSourceExit(0.),
 fStoreTrackIDSource(0),
 fStoreTrackIDCmos(0),
 fStoreEventIDCmosPrim(-10),
-fPrimDecayTime(0)
+fPrimDecayTime(0),
+fDetConf(DetConf)
 {}
 
 
