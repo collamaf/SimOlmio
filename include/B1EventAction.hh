@@ -43,7 +43,7 @@ class B1RunAction;
 class B1EventAction : public G4UserEventAction
 {
 public:
-	B1EventAction(B1RunAction* runAction);
+	B1EventAction(B1RunAction* runAction, G4double DetConf);
 	virtual ~B1EventAction();
 	
 	virtual void BeginOfEventAction(const G4Event* event);
@@ -160,6 +160,7 @@ private:
 	G4int fStoreTrackIDCmos;
 	G4int fStoreEventIDCmosPrim;
 	G4long fPrimDecayTime;
+	G4double fDetConf;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -65,7 +65,7 @@ void B1ActionInitialization::Build() const
   B1RunAction* runAction = new B1RunAction(fFileName);
   SetUserAction(runAction);
   
-  B1EventAction* eventAction = new B1EventAction(runAction);
+  B1EventAction* eventAction = new B1EventAction(runAction, fDetConf);
   SetUserAction(eventAction);
 	
   SetUserAction(new B1SteppingAction(eventAction, runAction, fDetConf));

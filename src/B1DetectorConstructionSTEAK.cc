@@ -110,6 +110,7 @@ G4VPhysicalVolume* B1DetectorConstructionSTEAK::Construct()
 	G4Material* PhantomInt_mat =nist->FindOrBuildMaterial("G4_WATER");
 	G4Material* SphereShell_mat=nist->FindOrBuildMaterial("G4_GLASS_PLATE");
 	G4Material* SphereInt_mat =nist->FindOrBuildMaterial("G4_WATER");
+	G4Material* Collimator_mat =nist->FindOrBuildMaterial("G4_Pb");
 
 	G4double phantom_sizeX = 30*cm;
 	G4double phantom_sizeY = 22*cm;
@@ -141,20 +142,33 @@ G4VPhysicalVolume* B1DetectorConstructionSTEAK::Construct()
 	G4double distSphereSurface=70*mm;
 	G4double distGammaCamera=25*cm;
 	G4double detLinearDistance=7*cm;
+	G4double distGammaCameraCollimator=5*cm;
 	
 	G4double sphereCenterZ=0.5*phantom_sizeZ-distSphereSurface-0.5*sphere_diameter[whichSphere];
 	if (fCenterSphere==0) sphereCenterZ=0*cm; //sfera centrata
 
 	G4double sphereCenterY=0*cm;
 
-	G4ThreeVector spherePos= G4ThreeVector(0,sphereCenterY,sphereCenterZ);
-	G4ThreeVector gammaCameraPos= G4ThreeVector(0,0, vesselExt_sizeZ*0.5+distGammaCamera);
-	G4ThreeVector trianglePos= G4ThreeVector(0, -triangle_vertices*0.5, 0);
 
 	G4double gammaCamera_sizeXY=100*cm;
 	G4double gammaCamera_sizeZ=10*um;
+	
+	G4double collimator_sizeXY=100*cm;
+	G4double collimator_sizeZ=40.64*mm;
+	
+	G4double collimatorHole_Diameter=2.94*mm;
+	G4double collimatorHole_SeptalThickness=1.13*mm*0.5;
 
 	G4double safeDistance=5*mm;
+
+//	G4double collimatorPosZ=1;
+	
+	G4double collimatorPosZ=vesselExt_sizeZ*0.5+distGammaCamera-collimator_sizeZ*0.5;
+	
+	G4ThreeVector spherePos= G4ThreeVector(0,sphereCenterY,sphereCenterZ);
+	G4ThreeVector collimatorPos= G4ThreeVector(0,0, collimatorPosZ);
+	G4ThreeVector gammaCameraPos= G4ThreeVector(0,0, vesselExt_sizeZ*0.5+distGammaCamera);
+	G4ThreeVector trianglePos= G4ThreeVector(0, -triangle_vertices*0.5, 0);
 
 
 	//###################################################################
@@ -167,8 +181,8 @@ G4VPhysicalVolume* B1DetectorConstructionSTEAK::Construct()
 	// WORLD
 	//##########################
 	
-	G4double world_sizeXY = 1.*m;
-	G4double world_sizeZ  = 1.*m;
+	G4double world_sizeXY = 2.*m;
+	G4double world_sizeZ  = 2.*m;
 	
 	G4Box* solidWorld =
 	new G4Box("World",                       //its name
@@ -351,9 +365,145 @@ G4VPhysicalVolume* B1DetectorConstructionSTEAK::Construct()
 										false,                 //no boolean operation
 										0,                     //copy number
 										checkOverlaps);        //overlaps checking
+//
+//
+//	G4Box* solidCollimatorAbs =
+//	new G4Box("CollimatorAbs",                       //its name
+//						0.5*collimator_sizeXY, 0.5*collimator_sizeXY, 0.5*collimator_sizeZ);     //its size
+
+//	G4LogicalVolume* logicCollimatorAbs =
+//	new G4LogicalVolume(solidCollimatorAbs,          //its solid
+//											Collimator_mat,           //its material
+//											"CollimatorAbs");            //its name
+//
+//	new G4PVPlacement(0,                     //no rotation
+//										collimatorPos,       //at (0,0,0)
+//										logicCollimatorAbs,            //its logical volume
+//										"CollimatorAbs",               //its name
+//										logicWorld,                     //its mother  volume
+//										false,                 //no boolean operation
+//										0,                     //copy number
+//										checkOverlaps);        //overlaps checking
 
 	
+	G4double collimatorHoleAext=(collimatorHole_Diameter+collimatorHole_SeptalThickness)/2.;
+	G4double collimatorHoleBext=(collimatorHole_Diameter+collimatorHole_SeptalThickness)*sqrt(3)/3;
+	G4double collimatorHoleCext=(collimatorHole_Diameter+collimatorHole_SeptalThickness)/2.*sqrt(3)/3;
 
+	
+	std::vector<G4TwoVector> verticiHoleExt;
+
+	verticiHoleExt.push_back({collimatorHoleCext,-collimatorHoleAext}); //vertex F
+	verticiHoleExt.push_back({-collimatorHoleCext,-collimatorHoleAext}); //vertex E
+	verticiHoleExt.push_back({-collimatorHoleBext,0}); //vertex D
+	verticiHoleExt.push_back({-collimatorHoleCext,collimatorHoleAext}); //vertex C
+	verticiHoleExt.push_back({collimatorHoleCext,collimatorHoleAext}); //vertex B
+	verticiHoleExt.push_back({collimatorHoleBext,0}); //vertex A
+
+
+	std::vector<G4ExtrudedSolid::ZSection> pianiHoleExt;
+	
+	pianiHoleExt.push_back(G4ExtrudedSolid::ZSection(-0.5*collimator_sizeZ,G4TwoVector(0,0),1));
+	pianiHoleExt.push_back(G4ExtrudedSolid::ZSection(0.5*collimator_sizeZ,G4TwoVector(0,0),1));
+
+	
+	G4VSolid* solidCollimatorHoleExt= new G4ExtrudedSolid("CollimatorHoleExt",
+																										 verticiHoleExt,
+																										 pianiHoleExt
+																						 );
+	
+	G4double collimatorHoleA=collimatorHole_Diameter/2.;
+	G4double collimatorHoleB=collimatorHole_Diameter*sqrt(3)/3;
+	G4double collimatorHoleC=collimatorHole_Diameter/2.*sqrt(3)/3;
+
+	
+	std::vector<G4TwoVector> verticiHole;
+
+	verticiHole.push_back({collimatorHoleC,-collimatorHoleA}); //vertex F
+	verticiHole.push_back({-collimatorHoleC,-collimatorHoleA}); //vertex E
+	verticiHole.push_back({-collimatorHoleB,0}); //vertex D
+	verticiHole.push_back({-collimatorHoleC,collimatorHoleA}); //vertex C
+	verticiHole.push_back({collimatorHoleC,collimatorHoleA}); //vertex B
+	verticiHole.push_back({collimatorHoleB,0}); //vertex A
+
+
+	std::vector<G4ExtrudedSolid::ZSection> pianiHole;
+	
+	pianiHole.push_back(G4ExtrudedSolid::ZSection(-0.5*collimator_sizeZ-100*um,G4TwoVector(0,0),1));
+	pianiHole.push_back(G4ExtrudedSolid::ZSection(0.5*collimator_sizeZ+100*um,G4TwoVector(0,0),1));
+
+	
+	G4VSolid* solidCollimatorHole= new G4ExtrudedSolid("CollimatorHole",
+																										 verticiHole,
+																										 pianiHole
+																						 );
+
+	G4SubtractionSolid* solidCollimator=new G4SubtractionSolid("CollimatorHoleExt-CollimatorHole", solidCollimatorHoleExt, solidCollimatorHole);
+	
+	G4int nHoleColumn=100;
+	G4int nHoleRow=100;
+
+	G4LogicalVolume* logicCollimator =
+	new G4LogicalVolume(solidCollimator,          //its solid
+											Collimator_mat,           //its material
+											"Collimator");            //its name
+
+	for (int iHoleColumn=0; iHoleColumn<nHoleColumn; iHoleColumn++) {
+		for (int iHoleRow=0; iHoleRow<nHoleRow; iHoleRow++) {
+			
+			//Verso Alto Destra
+			new G4PVPlacement(0,                     //no rotation
+												G4ThreeVector(iHoleRow*2.*collimatorHoleAext*sqrt(3)/2.,
+																			iHoleColumn*(collimatorHole_Diameter+collimatorHole_SeptalThickness)+iHoleRow*2.*collimatorHoleAext/2.,
+																			collimatorPosZ),       //at (0,0,0)
+												logicCollimator,            //its logical volume
+												"Collimator",               //its name
+												logicWorld,                     //its mother  volume
+												false,                 //no boolean operation
+												0,                     //copy number
+												checkOverlaps);        //overlaps checking
+			
+			//Verso Alto Sinistra
+			new G4PVPlacement(0,                     //no rotation
+												G4ThreeVector(-(iHoleRow+1)*2.*collimatorHoleAext*sqrt(3)/2.,
+																			iHoleColumn*(collimatorHole_Diameter+collimatorHole_SeptalThickness)-(iHoleRow+1)*2.*collimatorHoleAext/2.,
+																			collimatorPosZ),       //at (0,0,0)
+												logicCollimator,            //its logical volume
+												"Collimator",               //its name
+												logicWorld,                     //its mother  volume
+												false,                 //no boolean operation
+												0,                     //copy number
+												checkOverlaps);        //overlaps checking
+			
+			
+			//Verso Basso Destra
+			new G4PVPlacement(0,                     //no rotation
+												G4ThreeVector(iHoleRow*2.*collimatorHoleAext*sqrt(3)/2.,
+																			-(iHoleColumn+1)*(collimatorHole_Diameter+collimatorHole_SeptalThickness)+iHoleRow*2.*collimatorHoleAext/2.,
+																			collimatorPosZ),       //at (0,0,0)
+												logicCollimator,            //its logical volume
+												"Collimator",               //its name
+												logicWorld,                     //its mother  volume
+												false,                 //no boolean operation
+												0,                     //copy number
+												checkOverlaps);        //overlaps checking
+			
+			//Verso Basso Sinistra
+			new G4PVPlacement(0,                     //no rotation
+												G4ThreeVector(-(iHoleRow+1)*2.*collimatorHoleAext*sqrt(3)/2.,
+																			-(iHoleColumn+1)*(collimatorHole_Diameter+collimatorHole_SeptalThickness)-(iHoleRow+1)*2.*collimatorHoleAext/2.,
+																			collimatorPosZ),       //at (0,0,0)
+												logicCollimator,            //its logical volume
+												"Collimator",               //its name
+												logicWorld,                     //its mother  volume
+												false,                 //no boolean operation
+												0,                     //copy number
+												checkOverlaps);        //overlaps checking
+			
+			
+			
+		}
+	}
 	// Set scoring volume
 	//Pixelated CMOS
 //	fScoringVolume = logicPhantom;

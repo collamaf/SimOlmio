@@ -168,6 +168,7 @@ void B1EventAction::BeginOfEventAction(const G4Event* )
 	fEnteringParticle=0;
 	
 	fPrimDecayTime=0;
+	fDetConf=0;
 	/*
 	 fSourceX=0;
 	 fSourceY=0;
@@ -226,7 +227,7 @@ void B1EventAction::EndOfEventAction(const G4Event* evento)
 	
 	//	G4cout<<"CMOSDEBUG - SourceX scritto in root: "<<fSourceX<<G4endl<<G4endl;
 	
-	if(1||fEdep>0) analysisManager->AddNtupleRow(0);
+	if((fDetConf==0 && fPreNo>0) | fDetConf!=0) analysisManager->AddNtupleRow(0); //se non ci sono i detector (fDetConf==0) scrivi solo se qualcosa arriva alla GC, altrimenti scrivi sempre
 	
 	if(0&&evento->GetEventID()<=1e5){ //to write to proper ntuple all the source particles info
 		analysisManager->FillNtupleDColumn(1,0, fSourceX/mm);
