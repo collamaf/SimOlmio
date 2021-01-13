@@ -26,6 +26,11 @@ make
 ./exampleB1 -Sphere -6 -Source 2 -Isotope 2 -NPrim 1000
 ```
 
+### Fantoccio Bistecca, segnale da Olmio dentro il triangolo
+```
+./exampleB1 -Sphere -7 -Source 1 -Isotope 1 -NPrim 1000
+```
+
 ### Misure all'IFO per WIDMApp (Dec 2020):
 - Sfera r=8.5mm con 99mTc:
 ```
@@ -44,9 +49,16 @@ make
 
 
 ### Source Choice:
+- Source:
 1 - Activate spheres/cylinders
 2 - Activate phantom
-This is achieved by means of the "GPS/confine" function
+This is achieved by means of the "GPS/confine" function.
+- Isotope:
+1- Ho
+2- Tc
+3- I131
+4- 64Cu
+5- 80keV gamma from Ho
 
 ### Geometry Choice is performed by means of -Sphere argument:
 - -1/6 NEMA-like phantom with increasing diameter sphere in the center
@@ -129,6 +141,7 @@ A root file named CMOSmc_{XX}.root is created, reporting the several parameters 
 
 2021.01.13 by collamaf
 - Add new source option (5) to directly generate the 80kev photon from Ho decay.
+- Add possibility to choose number of Threads (NThreads)
 
 ## TO DO's
 

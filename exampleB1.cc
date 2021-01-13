@@ -73,7 +73,7 @@ int main(int argc,char** argv)
 	G4UIExecutive* ui = 0;
 	
 	G4double sphereDistY=0, CenterSphere=0, DetConf=0*mm, AbsorberThickness=1*mm, TBRvalue=1;
-	G4int FilterFlag=1, SourceChoice=1, IsotopeChoice=1, AbsorberMaterial=1, QuickFlagCommandLine=0, SphereSelect=6;
+	G4int FilterFlag=1, SourceChoice=1, IsotopeChoice=1, AbsorberMaterial=1, QuickFlagCommandLine=0, SphereSelect=6, nThreadIn=-1;
 	
 	G4String MacroName ="";
 	G4String FileNameLabel="";
@@ -138,6 +138,10 @@ int main(int argc,char** argv)
 			else if(option.compare("-Sphere")==0)
 			{
 				SphereSelect=strtod (argv[++i], NULL);;
+			}
+			else if(option.compare("-NThreads")==0)
+			{
+				nThreadIn=strtod (argv[++i], NULL);;
 			}
 			else if(option.compare("-TBR")==0)
 			{
@@ -266,7 +270,7 @@ int main(int argc,char** argv)
 	  G4MTRunManager* runManager = new G4MTRunManager;
 //	runManager->SetNumberOfThreads( G4Threading::G4GetNumberOfCores() );
 	G4int numOfThreads=(Verbose>0||VisFlag)?1:G4Threading::G4GetNumberOfCores() -2;
-	runManager->SetNumberOfThreads( numOfThreads );
+	runManager->SetNumberOfThreads(nThreadIn!=-1? nThreadIn: numOfThreads );
 #else
 	G4RunManager* runManager = new G4RunManager;
 #endif
