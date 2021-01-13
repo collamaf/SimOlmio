@@ -127,6 +127,9 @@ A root file named CMOSmc_{XX}.root is created, reporting the several parameters 
 - Add real collimator geometry for STEAK case
 - Add condition on steppingAction to differentiate case (w/ w/o detectors) optimizing time and file size.
 
+2021.01.13 by collamaf
+- Add new source option (5) to directly generate the 80kev photon from Ho decay.
+
 ## TO DO's
 
 

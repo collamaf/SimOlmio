@@ -244,6 +244,7 @@ int main(int argc,char** argv)
 	if (IsotopeChoice==2) FileNameCommonPart.append("_Tc");
 	if (IsotopeChoice==3) FileNameCommonPart.append("_I");
 	if (IsotopeChoice==4) FileNameCommonPart.append("_Cu");
+	if (IsotopeChoice==5) FileNameCommonPart.append("_HoS");
 
 
 	if (VisFlag) FileNameCommonPart.append("TEST"); //if it was a TEST run under vis
@@ -348,18 +349,68 @@ int main(int argc,char** argv)
 						UImanager->ApplyCommand("/gps/pos/confine Sphere");
 				}
 				
-				
-				
 			}
 
-			
+			if (IsotopeChoice<=4) {
 			UImanager->ApplyCommand("/gps/ene/type/Mono");
 			UImanager->ApplyCommand("/gps/ene/mono 0 MeV");
+			} else {
+				G4cout<<("AAAA FOTONE")<<G4endl;
+				UImanager->ApplyCommand("/gps/ene/type/Mono");
+				UImanager->ApplyCommand("/gps/ene/mono 80 keV");
+				UImanager->ApplyCommand("/gps/ang/type iso");
+			}
 			UImanager->ApplyCommand("/tracking/verbose " + std::to_string(Verbose));
 			UImanager->ApplyCommand("/run/beamOn " + std::to_string(NoOfPrimToGen));
 		}
+		
 	}
 	else {
+		UImanager->ApplyCommand("/gps/pos/type Volume");
+		UImanager->ApplyCommand("/gps/pos/centre 0. 0. 0. cm");
+		UImanager->ApplyCommand("/gps/pos/shape Para");
+		
+		if (SphereSelect>0) { //NEMA like
+			if (SourceChoice==2) { //fondo
+				UImanager->ApplyCommand("/gps/pos/halfx 30 cm");
+				UImanager->ApplyCommand("/gps/pos/halfy 30 cm");
+				UImanager->ApplyCommand("/gps/pos/halfz 30 cm");
+				UImanager->ApplyCommand("/gps/pos/confine Phantom");
+			} else { //segnale
+				UImanager->ApplyCommand("/gps/pos/halfx 4 cm");
+				UImanager->ApplyCommand("/gps/pos/halfy 14 cm");
+				UImanager->ApplyCommand("/gps/pos/halfz 2 cm");
+					UImanager->ApplyCommand("/gps/pos/confine Sphere");
+			}
+			
+		}
+		
+		else { //STEAK like
+			
+			if (SourceChoice==2) { //fondo
+				UImanager->ApplyCommand("/gps/pos/halfx 15 cm");
+				UImanager->ApplyCommand("/gps/pos/halfy 15 cm");
+				UImanager->ApplyCommand("/gps/pos/halfz 2 cm");
+				UImanager->ApplyCommand("/gps/pos/confine Phantom");
+			} else { //segnale
+				UImanager->ApplyCommand("/gps/pos/halfx 4 cm");
+				UImanager->ApplyCommand("/gps/pos/halfy 7 cm");
+				UImanager->ApplyCommand("/gps/pos/halfz 2 cm");
+					UImanager->ApplyCommand("/gps/pos/confine Sphere");
+			}
+			
+		}
+
+		if (IsotopeChoice<=4) {
+		UImanager->ApplyCommand("/gps/ene/type/Mono");
+		UImanager->ApplyCommand("/gps/ene/mono 0 MeV");
+		} else {
+			UImanager->ApplyCommand("/gps/ene/type/Mono");
+			UImanager->ApplyCommand("/gps/ene/mono 80 keV");
+			UImanager->ApplyCommand("/gps/ang/type iso");
+		}
+		UImanager->ApplyCommand("/tracking/verbose " + std::to_string(Verbose));
+		UImanager->ApplyCommand("/run/beamOn " + std::to_string(NoOfPrimToGen));
 		// interactive mode
 		UImanager->ApplyCommand("/control/execute init_vis.mac");
 		ui->SessionStart();

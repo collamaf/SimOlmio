@@ -140,18 +140,28 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
 		}
 		
 		//		G4cout<<"BBBBBBBB Touch= "<<prestepVolumeName<<G4endl;
+//
+//		G4double cutCosY=0.9895;
+//		//		cutCosY=0.7;
+//		G4double cutEnMin=70*keV;
+//		G4double cutEnMax=90*keV;
+//		if (step->GetPostStepPoint()->GetMomentumDirection().y()>cutCosY && step->GetPostStepPoint()->GetKineticEnergy()>cutEnMin && step->GetPostStepPoint()->GetKineticEnergy()<cutEnMax) {
+//			G4Event* evt = G4EventManager::GetEventManager()->GetNonconstCurrentEvent();
+//			evt->KeepTheEvent();
+//		}
 		
-		G4double cutCosY=0.9895;
+		
 		//		cutCosY=0.7;
-		G4double cutEnMin=70*keV;
-		G4double cutEnMax=90*keV;
-		if (step->GetPostStepPoint()->GetMomentumDirection().y()>cutCosY && step->GetPostStepPoint()->GetKineticEnergy()>cutEnMin && step->GetPostStepPoint()->GetKineticEnergy()<cutEnMax) {
+//		G4double cutEnMin=70*keV;
+//		G4double cutEnMax=90*keV;
+//		if ( step->GetPostStepPoint()->GetKineticEnergy()>cutEnMin && step->GetPostStepPoint()->GetKineticEnergy()<cutEnMax) {
 			G4Event* evt = G4EventManager::GetEventManager()->GetNonconstCurrentEvent();
 			evt->KeepTheEvent();
-		}
+//		}
+		
 		//		volumeCode=step->GetTrack()->GetOriginTouchable()->GetVolume()->GetName()=="Sphere"?1:0;
 		//		(runStepAction->GetRunPreGCOrigReg()).push_back(step->GetTrack()->GetOriginTouchable()->GetVolume()->GetName());
-		(runStepAction->GetRunPreGCCreatorProcess()).push_back(step->GetTrack()->GetCreatorProcess()->GetProcessSubType());
+		if (step->GetTrack()->GetCreatorProcess()) (runStepAction->GetRunPreGCCreatorProcess()).push_back(step->GetTrack()->GetCreatorProcess()->GetProcessSubType());
 		
 		//		G4cout<<"proc= "<<step->GetTrack()->GetCreatorProcess()->GetProcessName()<<" ype= "<<step->GetTrack()->GetCreatorProcess()->GetProcessType()<<" subtype= "<<step->GetTrack()->GetCreatorProcess()->GetProcessSubType()<<G4endl;
 		

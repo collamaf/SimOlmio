@@ -98,6 +98,11 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	G4double excitEnergy = 0.*keV;
 	
 	switch (fIsotopeSelect) {
+		case 5: //Ho photon
+			fSourceZ=-1;
+			fSourceA=-1;
+			break;
+			
 		case 4: //64Cu
 			fSourceZ=29;
 			fSourceA=64;
@@ -121,12 +126,18 @@ void B1PrimaryGeneratorAction::GeneratePrimaries (G4Event* anEvent)
 	}
 	
 
-
+	if (fSourceA!=-1) {
 	G4ParticleDefinition* sourceION
 	= G4IonTable::GetIonTable()->GetIon(fSourceZ,fSourceA,excitEnergy);
+		fGPS->SetParticleDefinition(sourceION);
+		fGPS->SetParticleCharge(ionCharge);
+	} else {
+		
+		G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
+		G4ParticleDefinition* gamma = particleTable->FindParticle("gamma");
+		fGPS->SetParticleDefinition(gamma);
+	}
 
-	fGPS->SetParticleDefinition(sourceION);
-	fGPS->SetParticleCharge(ionCharge);
 
 	fGPS->GeneratePrimaryVertex(anEvent);
 
