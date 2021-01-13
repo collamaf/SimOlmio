@@ -269,8 +269,8 @@ int main(int argc,char** argv)
 #ifdef G4MULTITHREADED
 	  G4MTRunManager* runManager = new G4MTRunManager;
 //	runManager->SetNumberOfThreads( G4Threading::G4GetNumberOfCores() );
-	G4int numOfThreads=(Verbose>0||VisFlag)?1:G4Threading::G4GetNumberOfCores() -2;
-	runManager->SetNumberOfThreads(nThreadIn!=-1? nThreadIn: numOfThreads );
+	G4int numOfThreads=(Verbose>0||VisFlag)?1:nThreadIn!=-1? nThreadIn:G4Threading::G4GetNumberOfCores() -2;
+	runManager->SetNumberOfThreads(numOfThreads);
 #else
 	G4RunManager* runManager = new G4RunManager;
 #endif
