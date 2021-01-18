@@ -50,7 +50,7 @@ make
 
 ### Source Choice:
 - Source:
-1 - Activate spheres/cylinders
+1 - Activate spheres/cylinders/innerShapes
 2 - Activate phantom
 This is achieved by means of the "GPS/confine" function.
 - Isotope:
@@ -142,6 +142,9 @@ A root file named CMOSmc_{XX}.root is created, reporting the several parameters 
 2021.01.13 by collamaf
 - Add new source option (5) to directly generate the 80kev photon from Ho decay.
 - Add possibility to choose number of Threads (NThreads)
+
+2021.01.18 by collamaf
+- Add new sphereOption for steak case (8): "Sauron", to be more symmetrical
 
 ## TO DO's
 

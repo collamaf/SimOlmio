@@ -233,29 +233,29 @@ G4VPhysicalVolume* B1DetectorConstructionSTEAK::Construct()
 	
 	
 	std::vector<G4TwoVector> verticiExt;
-	
+	std::vector<G4TwoVector> verticiInt;
+	std::vector<G4ExtrudedSolid::ZSection> pianiExt;
+	std::vector<G4ExtrudedSolid::ZSection> pianiInt;
 
+	if (whichSphere==6) { //triangolo
 	verticiExt.push_back({0,2*triangle_vertices+vesselInt_thickness});
 	verticiExt.push_back({triangle_vertices+vesselInt_thickness,-(triangle_vertices+vesselInt_thickness)});
 	verticiExt.push_back({-(triangle_vertices+vesselInt_thickness),-(triangle_vertices+vesselInt_thickness)});
 	
-	std::vector<G4TwoVector> verticiInt;
 
 	verticiInt.push_back({0,2*triangle_vertices});
 	verticiInt.push_back({triangle_vertices,-triangle_vertices});
 	verticiInt.push_back({-triangle_vertices,-triangle_vertices});
 
-	std::vector<G4ExtrudedSolid::ZSection> pianiExt;
 	pianiExt.push_back(G4ExtrudedSolid::ZSection(-0.5*vesselExt_sizeZ-booleanDistance,G4TwoVector(0,0),1));
 	pianiExt.push_back(G4ExtrudedSolid::ZSection(0.5*vesselExt_sizeZ+booleanDistance,G4TwoVector(0,0),1));
 
 	
-	std::vector<G4ExtrudedSolid::ZSection> pianiInt;
 	pianiInt.push_back(G4ExtrudedSolid::ZSection(-0.5*vesselExt_sizeZ-booleanDistance,G4TwoVector(0,0),1));
 	pianiInt.push_back(G4ExtrudedSolid::ZSection(0.5*vesselExt_sizeZ+booleanDistance,G4TwoVector(0,0),1));
 	
 	
-	if (whichSphere>=6) {
+	
 	solidInnerVesselLarge= new G4ExtrudedSolid("InnerVesselExt",
 																						 verticiExt,
 																						 pianiExt
@@ -265,7 +265,39 @@ G4VPhysicalVolume* B1DetectorConstructionSTEAK::Construct()
 																						 verticiInt,
 																						 pianiInt
 																						 );
-	} else  {
+	} else if (whichSphere==7) { //Sauron
+		double triangleSizeExt=triangle_vertices+vesselInt_thickness;
+		double lenghtFactor=2.5;
+		verticiExt.push_back({0,lenghtFactor*triangleSizeExt});
+		verticiExt.push_back({triangleSizeExt,0});
+		verticiExt.push_back({0,-lenghtFactor*triangleSizeExt});
+		verticiExt.push_back({-triangleSizeExt,0});
+		
+		verticiInt.push_back({0,lenghtFactor*triangle_vertices});
+		verticiInt.push_back({triangle_vertices,0});
+		verticiInt.push_back({0,-lenghtFactor*triangle_vertices});
+		verticiInt.push_back({-triangle_vertices,0});
+
+		pianiExt.push_back(G4ExtrudedSolid::ZSection(-0.5*vesselExt_sizeZ-booleanDistance,G4TwoVector(0,0),1));
+		pianiExt.push_back(G4ExtrudedSolid::ZSection(0.5*vesselExt_sizeZ+booleanDistance,G4TwoVector(0,0),1));
+
+		
+		pianiInt.push_back(G4ExtrudedSolid::ZSection(-0.5*vesselExt_sizeZ-booleanDistance,G4TwoVector(0,0),1));
+		pianiInt.push_back(G4ExtrudedSolid::ZSection(0.5*vesselExt_sizeZ+booleanDistance,G4TwoVector(0,0),1));
+		
+		
+		
+		solidInnerVesselLarge= new G4ExtrudedSolid("InnerVesselExt",
+																							 verticiExt,
+																							 pianiExt
+																							 );
+
+		solidInnerVesselInt= new G4ExtrudedSolid("InnerVesselInt",
+																							 verticiInt,
+																							 pianiInt
+																							 );
+	
+	}else  {
 	solidInnerVesselLarge= new G4Tubs("InnerVesselExt",0,
 																		0.5*sphere_diameter[whichSphere]+sphere_thickness,
 																		0.5*steak_thickness,

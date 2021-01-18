@@ -229,8 +229,10 @@ int main(int argc,char** argv)
 	if (SphereSelect>0) {//phantom NEMA
 		FileNameCommonPart.append("_Nema_s" + std::to_string((G4int)SphereSelect));
 	}else{//bistecca
-		if (SphereSelect<-6)
+		if (SphereSelect==-7)
 		FileNameCommonPart.append("_Steak_Triangle");
+		else if (SphereSelect==-8)
+			FileNameCommonPart.append("_Steak_Sauron");
 		else 		FileNameCommonPart.append("_Steak_s"+ std::to_string(-(G4int)SphereSelect));
 
 	}
