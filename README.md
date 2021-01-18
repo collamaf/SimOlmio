@@ -145,6 +145,7 @@ A root file named CMOSmc_{XX}.root is created, reporting the several parameters 
 
 2021.01.18 by collamaf
 - Add new sphereOption for steak case (8): "Sauron", to be more symmetrical
+- Add new sphereOption for steak case (9): "Papillon", to be more symmetrical in the thinner part
 
 ## TO DO's
 

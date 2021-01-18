@@ -297,7 +297,43 @@ G4VPhysicalVolume* B1DetectorConstructionSTEAK::Construct()
 																							 pianiInt
 																							 );
 	
-	}else  {
+	} else if (whichSphere==8) { //Papillon
+		double triangleSizeExt=triangle_vertices+vesselInt_thickness;
+		double lenghtFactor=2;
+
+		verticiExt.push_back({triangleSizeExt,lenghtFactor*triangleSizeExt}); //A
+		verticiExt.push_back({-triangleSizeExt,lenghtFactor*triangleSizeExt}); //D
+		verticiExt.push_back({-vesselInt_thickness,0}); //O
+		verticiExt.push_back({-triangleSizeExt,-lenghtFactor*triangleSizeExt}); //C
+		verticiExt.push_back({triangleSizeExt,-lenghtFactor*triangleSizeExt}); //B
+		verticiExt.push_back({vesselInt_thickness,0}); //O
+
+		verticiInt.push_back({triangle_vertices,lenghtFactor*triangle_vertices}); //A
+		verticiInt.push_back({-triangle_vertices,lenghtFactor*triangle_vertices}); //D
+		verticiInt.push_back({-0.0001,0}); //O
+		verticiInt.push_back({-triangle_vertices,-lenghtFactor*triangle_vertices}); //C
+		verticiInt.push_back({triangle_vertices,-lenghtFactor*triangle_vertices}); //B
+		verticiInt.push_back({0.0001,0}); //O
+
+		pianiExt.push_back(G4ExtrudedSolid::ZSection(-0.5*vesselExt_sizeZ-booleanDistance,G4TwoVector(0,0),1));
+		pianiExt.push_back(G4ExtrudedSolid::ZSection(0.5*vesselExt_sizeZ+booleanDistance,G4TwoVector(0,0),1));
+
+		
+		pianiInt.push_back(G4ExtrudedSolid::ZSection(-0.5*vesselExt_sizeZ-booleanDistance,G4TwoVector(0,0),1));
+		pianiInt.push_back(G4ExtrudedSolid::ZSection(0.5*vesselExt_sizeZ+booleanDistance,G4TwoVector(0,0),1));
+		
+		
+		
+		solidInnerVesselLarge= new G4ExtrudedSolid("InnerVesselExt",
+																							 verticiExt,
+																							 pianiExt
+																							 );
+
+		solidInnerVesselInt= new G4ExtrudedSolid("InnerVesselInt",
+																							 verticiInt,
+																							 pianiInt
+																							 );
+	}	else  {
 	solidInnerVesselLarge= new G4Tubs("InnerVesselExt",0,
 																		0.5*sphere_diameter[whichSphere]+sphere_thickness,
 																		0.5*steak_thickness,

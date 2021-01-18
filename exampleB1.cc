@@ -233,6 +233,8 @@ int main(int argc,char** argv)
 		FileNameCommonPart.append("_Steak_Triangle");
 		else if (SphereSelect==-8)
 			FileNameCommonPart.append("_Steak_Sauron");
+		else if (SphereSelect==-9)
+			FileNameCommonPart.append("_Steak_Papillon");
 		else 		FileNameCommonPart.append("_Steak_s"+ std::to_string(-(G4int)SphereSelect));
 
 	}
